@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/white</item>
+        <item name="colorPrimaryDark">@color/white</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="Transparent" parent="AppTheme">
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+
+    <style name="item_desc" parent="AppTheme">
+        <item name="android:textColor">@color/textPrimary</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:lineSpacingExtra">4dp</item>
+        <item name="android:letterSpacing" tools:targetApi="lollipop">0.02</item>
+    </style>
+
+    <style name="title_feed" parent="AppTheme">
+        <item name="android:textColor">@color/textPrimary</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:lineSpacingExtra">4dp</item>
+        <item name="android:letterSpacing" tools:targetApi="lollipop">0.02</item>
+    </style>
+
+    <style name="item_author">
+        <item name="android:textColor">@color/textThird</item>
+        <item name="android:textSize">11sp</item>
+        <item name="android:lineSpacingExtra">4dp</item>
+        <item name="android:letterSpacing" tools:targetApi="lollipop">0.02</item>
+    </style>
+
+    <style name="item_share_dialog">
+        <item name="android:textColor">@color/textPrimary</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:drawablePadding">17dp</item>
+        <item name="android:paddingTop">19dp</item>
+        <item name="android:paddingBottom">14dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:background">@drawable/press_effect_white_bg</item>
+    </style>
+
+    <style name="NumberProgressBar_Blue">
+        <item name="progress_max">100</item>
+        <item name="progress_current">0</item>
+        <item name="progress_unreached_color">@color/grey_f0</item>
+        <item name="progress_reached_color">@color/colorPrimary</item>
+        <item name="progress_text_size">0sp</item>
+        <item name="progress_reached_bar_height">1.7dp</item>
+        <item name="progress_unreached_bar_height">1.7dp</item>
+    </style>
+
+    <style name="TabTextAppearance">
+        <item name="android:textSize">13sp</item>
+        <item name="android:textColor">@color/greyBlue1</item>
+    </style>
+</resources>
