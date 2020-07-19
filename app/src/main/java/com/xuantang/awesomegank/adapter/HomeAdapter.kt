@@ -9,7 +9,7 @@ import com.xuantang.awesomegank.adapter.components.BannerViewHolder
 import com.xuantang.awesomegank.model.Data
 import kotlinx.android.synthetic.main.fragment_home.view.*
 
-class HomeAdapter(val context: Context) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class HomeAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     val data: List<Data.Results>? = null
 
     override fun getItemCount(): Int {
@@ -17,7 +17,7 @@ class HomeAdapter(val context: Context) : RecyclerView.Adapter<RecyclerView.View
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return BannerViewHolder.createViewHolder(this.context)
+        return BannerViewHolder.createViewHolder(parent.context)
     }
 
     override fun getItemViewType(position: Int): Int {

@@ -2,6 +2,7 @@ package com.xuantang.awesomegank.activities
 
 import android.graphics.Color
 import android.os.Bundle
+import android.view.Display
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -30,12 +31,13 @@ class MainActivity : AppCompatActivity() {
             }, false)
             true
         }
+        val display: Display = windowManager.defaultDisplay
     }
 
     inner class MainPagerAdapter(fm: FragmentManager, behavior: Int) : FragmentStatePagerAdapter(fm, behavior) {
         override fun getItem(position: Int): Fragment {
             return when (position) {
-                0 -> HomeFragment()
+                0 -> HomeFragment.Instance.get()
                 1 -> HomeFragment()
                 2 -> HomeFragment()
                 else -> MeFragment()

@@ -7,9 +7,8 @@ import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import com.howshea.basemodule.R
-import com.howshea.basemodule.component.view.RoundCornerImageView
-import com.howshea.basemodule.utils.dp
+import com.xuantang.awesomegank.extentions.dp
+
 import kotlin.math.ceil
 
 class NineGridImageLayout : ViewGroup {
@@ -39,16 +38,7 @@ class NineGridImageLayout : ViewGroup {
     private var itemClickListener: ((v: View, position: Int) -> Unit)? = null
 
     constructor(context: Context?) : super(context)
-    constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs) {
-        val attributes = context?.obtainStyledAttributes(attrs, R.styleable.NineGridImageLayout)
-        attributes?.apply {
-            spacing = getDimension(R.styleable.NineGridImageLayout_spacing, spacing.toFloat()).toInt()
-            singleImgSize = getDimension(R.styleable.NineGridImageLayout_singleSize, singleImgSize.toFloat()).toInt()
-        }
-        attributes?.recycle()
-
-    }
-
+    constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
     constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
