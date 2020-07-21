@@ -6,41 +6,73 @@
     android:layout_height="match_parent"
     android:id="@+id/home_container"
     tools:context=".activities.MainActivity">
-    <com.xuantang.awesomegank.components.HomeNestedScrollView
+    <com.xuantang.awesomegank.components.HomeSwipeRefreshView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/home_scrollview">
+        android:id="@+id/home_refresh">
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-            <com.youth.banner.Banner
-                android:id="@+id/banner"
-                android:layout_width="match_parent"
-                android:layout_height="200dp">
-            </com.youth.banner.Banner>
-            <com.google.android.material.tabs.TabLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:id="@+id/home_tab_layout">
-            </com.google.android.material.tabs.TabLayout>
-            <androidx.viewpager.widget.ViewPager
+            <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/home_viewpager">
-            </androidx.viewpager.widget.ViewPager>
+                android:background="@color/white"
+                android:id="@+id/home_title_bar">
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/search_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:background="@drawable/home_search_bg"
+                    android:gravity="center_vertical"
+                    android:drawableStart="@drawable/ic_baseline_search_24"
+                    android:paddingStart="15dp"
+                    android:elevation="5dp"
+                    android:textColor="#000000"
+                    tools:text="五月光环节"
+                    tools:ignore="RtlSymmetry" />
+            </FrameLayout>
+            <com.xuantang.awesomegank.components.HomeNestedScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/home_scrollview">
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+                    <com.youth.banner.Banner
+                        android:id="@+id/banner"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp">
+                    </com.youth.banner.Banner>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:background="@color/greyBlue0"/>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:background="@color/greyBlue1"/>
+                    <com.google.android.material.tabs.TabLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:background="@color/white"
+                        app:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget"
+                        app:tabIndicatorColor="@color/colorPrimary"
+                        app:tabSelectedTextColor="@color/colorPrimary"
+                        app:tabTextColor="@color/colorPrimaryDark"
+                        app:tabMode="scrollable"
+                        android:id="@+id/home_tab_layout">
+                    </com.google.android.material.tabs.TabLayout>
+                    <com.xuantang.awesomegank.components.HomeTabScrollViewPager
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/home_viewpager">
+                    </com.xuantang.awesomegank.components.HomeTabScrollViewPager>
+                </androidx.appcompat.widget.LinearLayoutCompat>
+            </com.xuantang.awesomegank.components.HomeNestedScrollView>
         </androidx.appcompat.widget.LinearLayoutCompat>
-    </com.xuantang.awesomegank.components.HomeNestedScrollView>
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/search_btn"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginStart="15dp"
-        android:layout_marginEnd="15dp"
-        android:background="@drawable/home_search_bg"
-        android:gravity="center_vertical"
-        android:paddingStart="10dp"
-        android:textColor="#000000"
-        tools:text="五月光环节"
-        tools:ignore="RtlSymmetry" />
+    </com.xuantang.awesomegank.components.HomeSwipeRefreshView>
 </FrameLayout>

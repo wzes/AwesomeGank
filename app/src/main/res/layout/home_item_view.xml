@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="data"
+            type="com.xuantang.awesomegank.model.Data.Results" />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/press_effect_white_bg"
+        android:paddingStart="15dp"
+        android:paddingTop="15dp"
+        android:paddingEnd="15dp"
+        android:paddingBottom="15dp">
+
+        <TextView
+            android:id="@+id/tv_desc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:lineSpacingExtra="4dp"
+            android:text="@{data.desc.replace('\n',' ').trim()}"
+            android:textColor="#404450"
+            android:textSize="15sp"
+            tools:text="目标检测（Object Detection）任务上深度学习方法的总结" />
+
+        <TextView
+            android:id="@+id/tv_author"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_desc"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="14dp"
+            android:lineSpacingExtra="4dp"
+            android:text="@{`via. `+data.who}"
+            android:textColor="#C3C4D1"
+            android:textSize="11sp"
+            tools:text="via. avid D. Lee" />
+
+        <TextView
+            android:id="@+id/tv_publish_at"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_desc"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="14dp"
+            android:lineSpacingExtra="4dp"
+            android:text="@{data.publishedAt.substring(0,10).replace('-','.')}"
+            android:textColor="#C3C4D1"
+            android:textSize="11sp"
+            tools:ignore="SmallSp"
+            tools:text="2018.10.22" />
+    </RelativeLayout>
+</layout>

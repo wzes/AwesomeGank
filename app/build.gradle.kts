@@ -20,6 +20,7 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+
     buildTypes {
         getByName("release") {
             isMinifyEnabled = true
@@ -54,8 +55,8 @@ dependencies {
     implementation(Deps.Glide.compiler)
     implementation(Deps.Glide.redirect)
     implementation(Deps.Arouter.api)
+    implementation("androidx.viewpager2:viewpager2:1.0.0")
     kapt (Deps.Arouter.compiler)
-
     implementation(Deps.Banner)
 
     testImplementation(Deps.Test.junit)

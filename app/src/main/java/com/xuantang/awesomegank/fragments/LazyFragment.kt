@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
+import com.xuantang.awesomegank.extentions.no
 import com.xuantang.awesomegank.extentions.yes
 
 abstract class LazyFragment : Fragment() {
@@ -29,8 +30,10 @@ abstract class LazyFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        initView()
-        isInit = true
+        isInit.no {
+            initView()
+            isInit = true
+        }
         isFirstVisible.yes {
             getData()
             isFirstVisible = false

@@ -3,6 +3,7 @@ package com.xuantang.awesomegank.model
 import com.google.gson.annotations.SerializedName
 
 data class Daily(
+    val category: List<String>,
     val error: Boolean,
     val results: DailyResults
 )
