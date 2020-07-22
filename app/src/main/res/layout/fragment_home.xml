@@ -41,16 +41,14 @@
                 <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:id="@+id/home_linear_container">
                     <com.youth.banner.Banner
                         android:id="@+id/banner"
+                        android:visibility="gone"
                         android:layout_width="match_parent"
                         android:layout_height="100dp">
                     </com.youth.banner.Banner>
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="100dp"
-                        android:background="@color/greyBlue0"/>
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="100dp"
@@ -64,6 +62,7 @@
                         app:tabSelectedTextColor="@color/colorPrimary"
                         app:tabTextColor="@color/colorPrimaryDark"
                         app:tabMode="scrollable"
+                        app:tabIndicatorHeight="3dp"
                         android:id="@+id/home_tab_layout">
                     </com.google.android.material.tabs.TabLayout>
                     <com.xuantang.awesomegank.components.HomeTabScrollViewPager

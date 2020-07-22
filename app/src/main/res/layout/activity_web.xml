@@ -10,7 +10,6 @@
         android:layout_width="match_parent"
         app:elevation="0dp"
         android:layout_height="wrap_content">
-
         <com.xuantang.awesomegank.components.SToolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
@@ -21,7 +20,6 @@
             app:titleColor="@color/textSecondary"
             app:titleSize="18sp"
             app:titleStyle="normal" />
-
     </com.google.android.material.appbar.AppBarLayout>
 
 
@@ -29,7 +27,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
 
         <com.xuantang.awesomegank.components.NestedScrollWebView
             android:id="@+id/web_view"

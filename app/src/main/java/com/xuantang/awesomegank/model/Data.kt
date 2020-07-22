@@ -1,7 +1,7 @@
 package com.xuantang.awesomegank.model
 
 data class Data(var error: Boolean,
-                var results: List<Results>) {
+                var results: ArrayList<Results>) {
     data class Results(var desc: String,
                        var publishedAt: String,
                        var url: String,

@@ -3,7 +3,6 @@ package com.xuantang.awesomegank.activities
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
-import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -16,11 +15,16 @@ import androidx.core.app.ShareCompat
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.xuantang.awesomegank.R
+import com.xuantang.awesomegank.database.CollectionDataBase
 import com.xuantang.awesomegank.extentions.*
 import io.reactivex.Completable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.activity_web.*
+import kotlinx.android.synthetic.main.dialog_web.view.*
+import com.xuantang.awesomegank.database.Collection
+import com.xuantang.awesomegank.utils.*
+import io.reactivex.rxkotlin.subscribeBy
 
 @Route(path = "/web/")
 class WebActivity : AppCompatActivity() {
@@ -34,9 +38,8 @@ class WebActivity : AppCompatActivity() {
         intent.getStringExtra("title")
     }
     private lateinit var webSetting: WebSettings
-//    private val menuDialog: BottomSheetDialog by lazy(LazyThreadSafetyMode.NONE) { initDialog() }
+    private val menuDialog: BottomSheetDialog by lazy(LazyThreadSafetyMode.NONE) { initDialog() }
     private val disposes = CompositeDisposable()
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,103 +48,103 @@ class WebActivity : AppCompatActivity() {
         contentView?.topPadding = getStatusBarHeight()
         toolbar.apply {
             setOnNavClick { onBackPressed() }
-            // setOnMenuClick { menuDialog.show() }
+            setOnMenuClick { menuDialog.show() }
         }
         setWebView()
     }
 
-//    private fun initDialog(): BottomSheetDialog {
-//        val view = layoutInflater.inflate(R.layout.dialog_web, null)
-//        if (intent.getBooleanExtra("close_collection", false)) {
-//            view.tv_collect.visibility = View.GONE
-//        } else {
-//            checkIsCollected(view)
-//            view.tv_collect.setOnClickListener {
-//                if (it.isSelected) {
-//                    deleteInCollection(url, view)
-//                } else {
-//                    val time = "${getYear()}/${getMonth()}/${getDay()} ${getHour()}:${getMinute()}"
-//                    insertCollection(Collection(title, url, time, coverUrl ?: ""), view)
-//                }
-//            }
-//        }
-//        view.tv_cancel.setOnClickListener {
-//            menuDialog.cancel()
-//        }
-//        view.tv_refresh.setOnClickListener {
-//            web_view.reload()
-//            menuDialog.cancel()
-//        }
-//        view.tv_copy_link.setOnClickListener {
-//            menuDialog.cancel()
-//            copyToClipBoard(url)
-//        }
-//        view.tv_share.setOnClickListener {
-//            menuDialog.cancel()
-//            ShareCompat.IntentBuilder
-//                .from(this)
-//                .setType("text/plain")
-//                .setText("${toolbar.title} $url")
-//                .setChooserTitle(R.string.share)
-//                .startChooser()
-//        }
-//        return BottomSheetDialog(this).apply {
-//            setContentView(view)
-//            //去除自带的白色背景
-//            delegate
-//                .findViewById<View>(android.support.design.R.id.design_bottom_sheet)
-//                ?.setBackgroundColor(resources.getColor(android.R.color.transparent))
-//        }
-//    }
+    @SuppressLint("InflateParams")
+    private fun initDialog(): BottomSheetDialog {
+        val view = layoutInflater.inflate(R.layout.dialog_web, null)
+        if (intent.getBooleanExtra("close_collection", false)) {
+            view.tv_collect.visibility = View.GONE
+        } else {
+            checkIsCollected(view)
+            view.tv_collect.setOnClickListener {
+                if (it.isSelected) {
+                    deleteInCollection(url, view)
+                } else {
+                    val time = "${getYear()}/${getMonth()}/${getDay()} ${getHour()}:${getMinute()}"
+                    insertCollection(Collection(title, url, time, coverUrl ?: ""), view)
+                }
+            }
+        }
+        view.tv_cancel.setOnClickListener {
+            menuDialog.cancel()
+        }
+        view.tv_refresh.setOnClickListener {
+            web_view.reload()
+            menuDialog.cancel()
+        }
+        view.tv_copy_link.setOnClickListener {
+            menuDialog.cancel()
+            copyToClipBoard(url)
+        }
+        view.tv_share.setOnClickListener {
+            menuDialog.cancel()
+            ShareCompat.IntentBuilder
+                .from(this)
+                .setType("text/plain")
+                .setText("${toolbar.title} $url")
+                .setChooserTitle(R.string.share)
+                .startChooser()
+        }
+        return BottomSheetDialog(this).apply {
+            setContentView(view)
+            //去除自带的白色背景
+            delegate.findViewById<View>(R.id.design_bottom_sheet)
+                ?.setBackgroundColor(resources.getColor(android.R.color.transparent, null))
+        }
+    }
 
-//    //查询是否已被收藏
-//    private fun checkIsCollected(view: View) {
-//        CollectionDataBase.getInstance(this).collectionDao().checkIsCollected(url)
-//            .dispatchDefault()
-//            .subscribeBy(
-//                onError = {
-//                    view.tv_collect.isSelected = false
-//                },
-//                onSuccess = {
-//                    view.tv_collect.isSelected = true
-//                }
-//            )
-//            .addDispose()
-//    }
-//
-//    //加入收藏
-//    private fun insertCollection(collection: Collection, view: View) {
-//        Completable.fromAction {
-//            CollectionDataBase.getInstance(this).collectionDao().insertCollection(collection)
-//        }
-//            .dispatchDefault()
-//            .subscribeBy(
-//                onError = {
-//                    toast("收藏失败")
-//                },
-//                onComplete = {
-//                    view.tv_collect.isSelected = true
-//                }
-//            )
-//            .addDispose()
-//    }
-//
-//    //取消收藏
-//    private fun deleteInCollection(url: String, view: View) {
-//        Completable.fromAction {
-//            CollectionDataBase.getInstance(this).collectionDao().delete(url)
-//        }
-//            .dispatchDefault()
-//            .subscribeBy(
-//                onError = {
-//                    toast("取消收藏失败")
-//                },
-//                onComplete = {
-//                    view.tv_collect.isSelected = false
-//                }
-//            )
-//            .addDispose()
-//    }
+    //查询是否已被收藏
+    private fun checkIsCollected(view: View) {
+        CollectionDataBase.getInstance(this).collectionDao().checkIsCollected(url)
+            .dispatchDefault()
+            .subscribeBy(
+                onError = {
+                    view.tv_collect.isSelected = false
+                },
+                onSuccess = {
+                    view.tv_collect.isSelected = true
+                }
+            )
+            .addDispose()
+    }
+
+    //加入收藏
+    private fun insertCollection(collection: Collection, view: View) {
+        Completable.fromAction {
+            CollectionDataBase.getInstance(this).collectionDao().insertCollection(collection)
+        }
+            .dispatchDefault()
+            .subscribeBy(
+                onError = {
+                    toast("收藏失败")
+                },
+                onComplete = {
+                    view.tv_collect.isSelected = true
+                }
+            )
+            .addDispose()
+    }
+
+    //取消收藏
+    private fun deleteInCollection(url: String, view: View) {
+        Completable.fromAction {
+            CollectionDataBase.getInstance(this).collectionDao().delete(url)
+        }
+            .dispatchDefault()
+            .subscribeBy(
+                onError = {
+                    toast("取消收藏失败")
+                },
+                onComplete = {
+                    view.tv_collect.isSelected = false
+                }
+            )
+            .addDispose()
+    }
 
     @SuppressLint("SetJavaScriptEnabled")
     private fun setWebView() {

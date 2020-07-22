@@ -60,6 +60,8 @@ object Deps {
 
     val Banner = "com.youth.banner:banner:2.0.12"
 
+    val LifecycleExtensions = "androidx.lifecycle:lifecycle-extensions:2.2.0"
+
     fun addRepos(handler: RepositoryHandler) {
         handler.apply {
             google()

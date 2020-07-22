@@ -55,9 +55,14 @@ dependencies {
     implementation(Deps.Glide.compiler)
     implementation(Deps.Glide.redirect)
     implementation(Deps.Arouter.api)
-    implementation("androidx.viewpager2:viewpager2:1.0.0")
+    implementation(Deps.LifecycleExtensions)
     kapt (Deps.Arouter.compiler)
     implementation(Deps.Banner)
+
+    kapt(Deps.Room.compiler)
+    implementation(Deps.Room.runtime)
+    implementation(Deps.Room.ktx)
+    implementation(Deps.Room.rxjava2)
 
     testImplementation(Deps.Test.junit)
     androidTestImplementation(Deps.Test.runner)

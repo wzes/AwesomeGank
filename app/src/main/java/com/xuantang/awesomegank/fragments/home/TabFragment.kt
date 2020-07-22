@@ -11,25 +11,42 @@ import android.widget.ImageView
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.alibaba.android.arouter.launcher.ARouter
 import com.xuantang.awesomegank.R
 import com.xuantang.awesomegank.databinding.HomeItemViewBinding
+import com.xuantang.awesomegank.extentions.dispatchDefault
 import com.xuantang.awesomegank.extentions.no
 import com.xuantang.awesomegank.extentions.yes
 import com.xuantang.awesomegank.model.Data
 import com.xuantang.awesomegank.service.DataService
+import com.xuantang.awesomegank.viewmodel.ArticleViewModel
+import com.xuantang.awesomegank.viewmodel.BannerViewModel
+import com.xuantang.awesomegank.viewmodel.RefreshViewModel
+import io.reactivex.Completable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_tab.*
 
 
-class TabFragment(private val category: String, private val position: Int) : Fragment() {
+class TabFragment(private val category: String, private val position: Int) : Fragment(),
+    HomeFragment.OnRefreshListener, HomeFragment.OnStickyListener {
     private var isInit = false
     private var isFirstVisible = true
-    private var mData: MutableList<Data.Results>? = arrayListOf()
+    private val articleModel by lazy(LazyThreadSafetyMode.NONE) {
+        ViewModelProviders.of(this).get(ArticleViewModel::class.java)
+    }
+
+    private val refreshModel by lazy(LazyThreadSafetyMode.NONE) {
+        activity?.let {
+            ViewModelProviders.of(it).get(RefreshViewModel::class.java)
+        }
+    }
 
     private var page: Int = 1
     private var hasMore: Boolean = true
@@ -47,30 +64,25 @@ class TabFragment(private val category: String, private val position: Int) : Fra
     private fun initView() {
         home_tab_recyclerview.adapter = ArticleAdapter()
         home_tab_recyclerview.layoutManager = LinearLayoutManager(context)
-        HomeFragment.newInstance().addStickyListener(object : HomeFragment.OnStickyListener {
-            override fun onChanged(sticky: Boolean) {
-                if (!sticky) {
-                    if (home_tab_recyclerview.computeVerticalScrollOffset() != 0) {
-                        home_tab_recyclerview.smoothScrollToPosition(0)
-                    }
-                }
-            }
-        })
+        HomeFragment.newInstance().addRefreshListener(this)
+        HomeFragment.newInstance().addStickyListener(this)
     }
 
     private fun getData() {
-        CompositeDisposable().add(
-            DataService.getDataOfType(category, 10, page)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe {
-                    if (it.error || it.results.isEmpty()) {
-                        hasMore = false
-                    } else {
-                        this.mData?.addAll(it.results)
-                        home_tab_recyclerview.adapter?.notifyDataSetChanged()
-                    }
-                })
+        articleModel.getArticleData().observe(this, Observer {
+            it.let {
+                home_tab_recyclerview.adapter?.notifyDataSetChanged()
+                refreshModel?.setRefresh(0)
+            }
+        })
+        articleModel.getError().observe(this, Observer {
+            it.let {
+                hasMore = false
+                home_tab_recyclerview.adapter?.notifyDataSetChanged()
+                refreshModel?.setRefresh(0)
+            }
+        })
+        articleModel.fetch(category, page)
     }
 
 
@@ -111,14 +123,15 @@ class TabFragment(private val category: String, private val position: Int) : Fra
 
         override fun getItemCount(): Int {
             return if (hasMore) {
-                (mData?.size ?: 0) + 1
+                (articleModel.getArticleData().value?.size ?: 0) + 1
             } else {
-                (mData?.size ?: 0)
+                (articleModel.getArticleData().value?.size ?: 0)
             }
         }
 
         override fun getItemViewType(position: Int): Int {
-            if (position == mData?.size) {
+            val size = articleModel.getArticleData().value?.size ?: 0
+            if (position == size) {
                 return 2
             }
             return 1
@@ -127,13 +140,12 @@ class TabFragment(private val category: String, private val position: Int) : Fra
         @SuppressLint("SetTextI18n")
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
             if (getItemViewType(position) == 1) {
-                mData?.get(position)?.let {
+                articleModel.getArticleData().value?.get(position)?.let {
                     (holder as ArticleViewHolder).bind(it)
                 }
             } else if (getItemViewType(position) == 2) {
                 (holder as LoadingViewHolder).bind()
-                page++
-                getData()
+                articleModel.fetch(category, ++page)
             }
         }
     }
@@ -159,6 +171,21 @@ class TabFragment(private val category: String, private val position: Int) : Fra
         fun bind() {
             val rotateAnimation: Animation = AnimationUtils.loadAnimation(context, R.anim.home_loading_item)
             mImageView?.startAnimation(rotateAnimation)
+        }
+    }
+
+    override fun onRefresh(index: Int) {
+        (index == position).yes {
+            page = 1
+            articleModel.fetch(category, page, true)
+        }
+    }
+
+    override fun onChanged(sticky: Boolean) {
+        if (!sticky) {
+            if (home_tab_recyclerview.computeVerticalScrollOffset() != 0) {
+                home_tab_recyclerview.smoothScrollToPosition(0)
+            }
         }
     }
 }

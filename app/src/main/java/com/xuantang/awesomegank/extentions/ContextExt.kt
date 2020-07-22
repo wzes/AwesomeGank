@@ -1,6 +1,9 @@
 package com.xuantang.awesomegank.extentions
 
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Context
+import android.content.pm.PackageManager
 import android.view.View
 
 /**
@@ -33,3 +36,21 @@ fun View.sp(value: Int): Int = context.sp(value)
 fun View.sp(value: Float): Int = context.sp(value)
 fun View.px2dp(px: Int): Float = context.px2dp(px)
 fun View.px2sp(px: Int): Float = context.px2sp(px)
+
+
+fun Context.copyToClipBoard(url: String) {
+    val cm = this.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+    val text = ClipData.newPlainText("url", url)
+    cm.setPrimaryClip(text)
+    toast("已复制到剪贴板")
+}
+
+fun Context.getVersionName(): String {
+    return try {
+        packageManager.getPackageInfo(packageName, 0).versionName
+    } catch (e: PackageManager.NameNotFoundException) {
+        e.printStackTrace()
+        ""
+    }
+
+}

@@ -6,6 +6,7 @@ import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.VelocityTracker
 import android.view.View
+import android.widget.Toast
 import androidx.core.view.ViewCompat
 import androidx.core.widget.NestedScrollView
 import com.xuantang.awesomegank.fragments.home.HomeFragment
@@ -18,7 +19,7 @@ class HomeNestedScrollView : NestedScrollView {
     private var mPullDownY: Int = 0
     private var mOnPullListeners: ArrayList<OnPullListener> = ArrayList()
 
-    private var mVelocityTracker: VelocityTracker? = null
+    private var myVelocityTracker: VelocityTracker? = null
     fun addPullListener(l: OnPullListener) {
         this.mOnPullListeners.add(l)
     }
@@ -71,30 +72,35 @@ class HomeNestedScrollView : NestedScrollView {
 
     private var mLastY = 0
 
-    @SuppressLint("ClickableViewAccessibility", "Recycle")
     override fun onTouchEvent(ev: MotionEvent?): Boolean {
-        if (ev?.action == MotionEvent.ACTION_DOWN) {
-            mLastY = ev.y.toInt()
-            mVelocityTracker = VelocityTracker.obtain()
+        if (myVelocityTracker == null) {
+            myVelocityTracker = VelocityTracker.obtain()
         }
-        if (ev?.action == MotionEvent.ACTION_MOVE) {
-            if (!canScrollVertically(1)) {
+        when (ev?.action) {
+            MotionEvent.ACTION_DOWN -> {
+                mLastY = ev.y.toInt()
+            }
+            MotionEvent.ACTION_MOVE -> {
+                if (!canScrollVertically(1)) {
+                    val target = HomeFragment.newInstance().getCurrentRecyclerView()
+                    val dy = ev.y.toInt() - mLastY
+                    target?.scrollBy(0, -dy)
+                }
+                mLastY = ev.y.toInt()
+                myVelocityTracker?.addMovement(ev)
+            }
+            MotionEvent.ACTION_UP -> {
+                for (l in mOnPullListeners) {
+                    l.onPullEnd()
+                }
+                myVelocityTracker?.computeCurrentVelocity(1000)
                 val target = HomeFragment.newInstance().getCurrentRecyclerView()
-                val dy = ev.y.toInt() - mLastY
-                target?.scrollBy(0, -dy)
+                if (myVelocityTracker?.yVelocity != null) {
+                    target?.fling(0, -myVelocityTracker?.yVelocity?.toInt()!!)
+                }
+                myVelocityTracker?.recycle()
+                myVelocityTracker = null
             }
-            mLastY = ev.y.toInt()
-            mVelocityTracker?.addMovement(ev)
-        }
-        if (ev?.action == MotionEvent.ACTION_UP) {
-            for (l in mOnPullListeners) {
-                l.onPullEnd()
-            }
-            mVelocityTracker?.computeCurrentVelocity(1000)
-            val target = HomeFragment.newInstance().getCurrentRecyclerView()
-            target?.fling(0, -mVelocityTracker?.yVelocity!!.toInt())
-            mVelocityTracker?.clear()
-            mVelocityTracker?.recycle()
         }
         return super.onTouchEvent(ev)
     }
