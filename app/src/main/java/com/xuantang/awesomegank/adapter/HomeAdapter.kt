@@ -1,16 +1,12 @@
 package com.xuantang.awesomegank.adapter
 
-import android.content.Context
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.xuantang.awesomegank.R
 import com.xuantang.awesomegank.adapter.components.BannerViewHolder
-import com.xuantang.awesomegank.model.Data
-import kotlinx.android.synthetic.main.fragment_home.view.*
+import com.xuantang.awesomegank.model.ArticleResponse
 
-class HomeAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    val data: List<Data.Results>? = null
+class HomeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    val data: List<ArticleResponse.ArticleModel>? = null
 
     override fun getItemCount(): Int {
         return this.data?.size ?: 0

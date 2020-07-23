@@ -1,12 +1,10 @@
 package com.xuantang.awesomegank.components
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.VelocityTracker
 import android.view.View
-import android.widget.Toast
 import androidx.core.view.ViewCompat
 import androidx.core.widget.NestedScrollView
 import com.xuantang.awesomegank.fragments.home.HomeFragment
@@ -19,7 +17,7 @@ class HomeNestedScrollView : NestedScrollView {
     private var mPullDownY: Int = 0
     private var mOnPullListeners: ArrayList<OnPullListener> = ArrayList()
 
-    private var myVelocityTracker: VelocityTracker? = null
+    private var mVelocityTracker: VelocityTracker? = null
     fun addPullListener(l: OnPullListener) {
         this.mOnPullListeners.add(l)
     }
@@ -53,7 +51,7 @@ class HomeNestedScrollView : NestedScrollView {
         dyConsumed: Int,
         dxUnconsumed: Int,
         dyUnconsumed: Int
-    ) { // 对应场景2：用户上滑到吸顶态继续上滑，这个时候要使内层RecycleView(信息流RecycleView)滑动。原target是外层的RecycleView
+    ) {
         if (target is ArticleRecyclerView && dyUnconsumed > 0) {
             val recyclerView = HomeFragment.newInstance().getCurrentRecyclerView()
             recyclerView?.scrollBy(dxUnconsumed, dyUnconsumed)
@@ -73,9 +71,8 @@ class HomeNestedScrollView : NestedScrollView {
     private var mLastY = 0
 
     override fun onTouchEvent(ev: MotionEvent?): Boolean {
-        if (myVelocityTracker == null) {
-            myVelocityTracker = VelocityTracker.obtain()
-        }
+        initVelocityTrackerIfNotExists()
+        mVelocityTracker?.addMovement(ev)
         when (ev?.action) {
             MotionEvent.ACTION_DOWN -> {
                 mLastY = ev.y.toInt()
@@ -87,28 +84,38 @@ class HomeNestedScrollView : NestedScrollView {
                     target?.scrollBy(0, -dy)
                 }
                 mLastY = ev.y.toInt()
-                myVelocityTracker?.addMovement(ev)
             }
             MotionEvent.ACTION_UP -> {
                 for (l in mOnPullListeners) {
                     l.onPullEnd()
                 }
-                myVelocityTracker?.computeCurrentVelocity(1000)
+                mVelocityTracker?.computeCurrentVelocity(1000)
                 val target = HomeFragment.newInstance().getCurrentRecyclerView()
-                if (myVelocityTracker?.yVelocity != null) {
-                    target?.fling(0, -myVelocityTracker?.yVelocity?.toInt()!!)
+                if (mVelocityTracker?.yVelocity != null) {
+                    target?.fling(0, -mVelocityTracker?.yVelocity?.toInt()!!)
                 }
-                myVelocityTracker?.recycle()
-                myVelocityTracker = null
+                recycleVelocityTracker()
             }
         }
         return super.onTouchEvent(ev)
     }
 
 
+    private fun initVelocityTrackerIfNotExists() {
+        if (mVelocityTracker == null) {
+            mVelocityTracker = VelocityTracker.obtain()
+        }
+    }
+
+    private fun recycleVelocityTracker() {
+        if (mVelocityTracker != null) {
+            mVelocityTracker?.recycle()
+            mVelocityTracker = null
+        }
+    }
+
     interface OnPullListener {
         fun onPull(down: Int)
-
         fun onPullEnd()
     }
 }

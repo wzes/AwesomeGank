@@ -5,7 +5,7 @@
     <data>
         <variable
             name="data"
-            type="com.xuantang.awesomegank.model.Data.Results" />
+            type="com.xuantang.awesomegank.model.ArticleResponse.ArticleModel" />
     </data>
 
     <RelativeLayout
@@ -36,7 +36,7 @@
             android:layout_alignParentStart="true"
             android:layout_marginTop="14dp"
             android:lineSpacingExtra="4dp"
-            android:text="@{`via. `+data.who}"
+            android:text="@{`via. `+ data.author}"
             android:textColor="#C3C4D1"
             android:textSize="11sp"
             tools:text="via. avid D. Lee" />

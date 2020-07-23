@@ -9,6 +9,7 @@ import androidx.fragment.app.FragmentPagerAdapter
 import androidx.fragment.app.FragmentStatePagerAdapter
 import com.xuantang.awesomegank.R
 import com.xuantang.awesomegank.extentions.setStatusTransAndDarkIcon
+import com.xuantang.awesomegank.fragments.find.FindFragment
 import com.xuantang.awesomegank.fragments.fuli.FuLiFragment
 import com.xuantang.awesomegank.fragments.home.HomeFragment
 import com.xuantang.awesomegank.fragments.me.MeFragment
@@ -28,9 +29,7 @@ class MainActivity : AppCompatActivity() {
 
         bottom_nav.setOnNavigationItemSelectedListener { p0 ->
             val position = when (p0.itemId) {
-                R.id.home -> {
-                    0
-                }
+                R.id.home -> 0
                 R.id.read -> 1
                 R.id.data -> 2
                 R.id.me -> 3
@@ -43,6 +42,11 @@ class MainActivity : AppCompatActivity() {
             viewpager.setCurrentItem(position, false)
             true
         }
+
+    }
+
+    fun setBottomNavVisible(visibility: Int) {
+        bottom_nav.visibility = visibility
     }
 
     inner class MainPagerAdapter(fm: FragmentManager, behavior: Int) : FragmentStatePagerAdapter(fm, behavior) {
@@ -50,7 +54,7 @@ class MainActivity : AppCompatActivity() {
             return when (position) {
                 0 -> HomeFragment.newInstance()
                 1 -> FuLiFragment.newInstance()
-                2 -> HomeFragment()
+                2 -> FindFragment()
                 else -> MeFragment()
             }
         }

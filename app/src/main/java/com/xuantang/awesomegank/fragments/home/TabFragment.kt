@@ -16,21 +16,20 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.alibaba.android.arouter.launcher.ARouter
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.bumptech.glide.request.RequestOptions
 import com.xuantang.awesomegank.R
+import com.xuantang.awesomegank.adapter.ArticleAdapter
+import com.xuantang.awesomegank.components.NineGridImageLayout
+import com.xuantang.awesomegank.databinding.HomeItemArticleAdapterBinding
 import com.xuantang.awesomegank.databinding.HomeItemViewBinding
-import com.xuantang.awesomegank.extentions.dispatchDefault
 import com.xuantang.awesomegank.extentions.no
 import com.xuantang.awesomegank.extentions.yes
-import com.xuantang.awesomegank.model.Data
-import com.xuantang.awesomegank.service.DataService
+import com.xuantang.awesomegank.model.ArticleResponse
 import com.xuantang.awesomegank.viewmodel.ArticleViewModel
-import com.xuantang.awesomegank.viewmodel.BannerViewModel
 import com.xuantang.awesomegank.viewmodel.RefreshViewModel
-import io.reactivex.Completable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.rxkotlin.subscribeBy
-import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_tab.*
 
 
@@ -62,7 +61,10 @@ class TabFragment(private val category: String, private val position: Int) : Fra
     }
 
     private fun initView() {
-        home_tab_recyclerview.adapter = ArticleAdapter()
+        home_tab_recyclerview.adapter = ArticleAdapter(this, articleModel.getArticleData().value, hasMore) {
+            // loadMore
+            articleModel.fetch(category, ++page)
+        }
         home_tab_recyclerview.layoutManager = LinearLayoutManager(context)
         HomeFragment.newInstance().addRefreshListener(this)
         HomeFragment.newInstance().addStickyListener(this)
@@ -71,6 +73,7 @@ class TabFragment(private val category: String, private val position: Int) : Fra
     private fun getData() {
         articleModel.getArticleData().observe(this, Observer {
             it.let {
+                (home_tab_recyclerview.adapter as ArticleAdapter).setData(articleModel.getArticleData().value)
                 home_tab_recyclerview.adapter?.notifyDataSetChanged()
                 refreshModel?.setRefresh(0)
             }
@@ -78,6 +81,7 @@ class TabFragment(private val category: String, private val position: Int) : Fra
         articleModel.getError().observe(this, Observer {
             it.let {
                 hasMore = false
+                (home_tab_recyclerview.adapter as ArticleAdapter).setHasMore(hasMore)
                 home_tab_recyclerview.adapter?.notifyDataSetChanged()
                 refreshModel?.setRefresh(0)
             }
@@ -100,77 +104,6 @@ class TabFragment(private val category: String, private val position: Int) : Fra
         isFirstVisible.yes {
             getData()
             isFirstVisible = false
-        }
-    }
-
-    inner class ArticleAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-            return if (viewType == 1) {
-                val inflater = LayoutInflater.from(parent.context)
-                val binding = DataBindingUtil.inflate<HomeItemViewBinding>(
-                    inflater,
-                    R.layout.home_item_view,
-                    parent,
-                    false
-                )
-                ArticleViewHolder(binding)
-            } else {
-                val view = LayoutInflater.from(parent.context)
-                    .inflate(R.layout.home_item_loading, parent, false) as LinearLayoutCompat
-                LoadingViewHolder(view)
-            }
-        }
-
-        override fun getItemCount(): Int {
-            return if (hasMore) {
-                (articleModel.getArticleData().value?.size ?: 0) + 1
-            } else {
-                (articleModel.getArticleData().value?.size ?: 0)
-            }
-        }
-
-        override fun getItemViewType(position: Int): Int {
-            val size = articleModel.getArticleData().value?.size ?: 0
-            if (position == size) {
-                return 2
-            }
-            return 1
-        }
-
-        @SuppressLint("SetTextI18n")
-        override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-            if (getItemViewType(position) == 1) {
-                articleModel.getArticleData().value?.get(position)?.let {
-                    (holder as ArticleViewHolder).bind(it)
-                }
-            } else if (getItemViewType(position) == 2) {
-                (holder as LoadingViewHolder).bind()
-                articleModel.fetch(category, ++page)
-            }
-        }
-    }
-
-    internal inner class ArticleViewHolder(private val binding: HomeItemViewBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: Data.Results) {
-            binding.data = item
-            binding.executePendingBindings()
-            binding.root.setOnClickListener {
-                ARouter.getInstance().build("/web/")
-                    .withString("web_url", item.url)
-                    .withString("title", item.desc)
-                    .navigation()
-            }
-        }
-    }
-
-    internal inner class LoadingViewHolder(layout: LinearLayoutCompat) : RecyclerView.ViewHolder(layout) {
-        var mImageView: ImageView? = null
-        init {
-            mImageView = layout.findViewById(R.id.home_item_loading)
-        }
-        fun bind() {
-            val rotateAnimation: Animation = AnimationUtils.loadAnimation(context, R.anim.home_loading_item)
-            mImageView?.startAnimation(rotateAnimation)
         }
     }
 

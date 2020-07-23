@@ -20,7 +20,7 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="霸王餐"
+            android:text="安卓"
             android:layout_marginTop="5dp"
             android:textAlignment="center">
         </androidx.appcompat.widget.AppCompatTextView>
@@ -41,7 +41,7 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="霸王餐"
+            android:text="苹果"
             android:layout_marginTop="5dp"
             android:textAlignment="center">
         </androidx.appcompat.widget.AppCompatTextView>
@@ -62,7 +62,7 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="霸王餐"
+            android:text="福利"
             android:layout_marginTop="5dp"
             android:textAlignment="center">
         </androidx.appcompat.widget.AppCompatTextView>

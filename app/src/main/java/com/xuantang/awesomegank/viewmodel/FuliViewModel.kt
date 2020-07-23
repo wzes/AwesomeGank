@@ -8,23 +8,23 @@ import com.xuantang.awesomegank.model.ArticleResponse
 import com.xuantang.awesomegank.service.DataService
 import io.reactivex.rxkotlin.subscribeBy
 
-open class ArticleViewModel : RxViewModel() {
-    private val articleData: MutableLiveData<ArrayList<ArticleResponse.ArticleModel>> = MutableLiveData()
+open class FuliViewModel : RxViewModel() {
+    private val fuliData: MutableLiveData<ArrayList<ArticleResponse.ArticleModel>> = MutableLiveData()
 
     private val rxError: MutableLiveData<Throwable> = MutableLiveData()
-    fun getArticleData(): LiveData<ArrayList<ArticleResponse.ArticleModel>> = articleData
+    fun getFuliData(): LiveData<ArrayList<ArticleResponse.ArticleModel>> = fuliData
     fun getError(): LiveData<Throwable> = rxError
 
-    private fun getArticle(category: String, page: Int, refresh: Boolean = false) {
-        DataService.getDataOfType(category, 10, page)
+    private fun getFuli(page: Int, refresh: Boolean = false) {
+        DataService.getFuli(10, page)
             .dispatchDefault()
             .subscribeBy(
                 onNext = {
-                    if (refresh || articleData.value == null) {
-                        articleData.value = it.data
+                    if (refresh || fuliData.value == null) {
+                        fuliData.value = it.data
                     } else {
-                        articleData.value?.addAll(it.data)
-                        articleData.value = articleData.value
+                        fuliData.value?.addAll(it.data)
+                        fuliData.value = fuliData.value
                     }
                 },
                 onError = {
@@ -35,7 +35,7 @@ open class ArticleViewModel : RxViewModel() {
             .addDispose()
     }
 
-    fun fetch(category: String, page: Int, refresh: Boolean = false) {
-        getArticle(category, page, refresh)
+    fun fetch(page: Int, refresh: Boolean = false) {
+        getFuli(page, refresh)
     }
 }

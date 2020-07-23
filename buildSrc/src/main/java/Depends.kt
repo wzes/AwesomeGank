@@ -62,6 +62,9 @@ object Deps {
 
     val LifecycleExtensions = "androidx.lifecycle:lifecycle-extensions:2.2.0"
 
+
+    val ViewPager2 = "androidx.viewpager2:viewpager2:1.0.0"
+
     fun addRepos(handler: RepositoryHandler) {
         handler.apply {
             google()

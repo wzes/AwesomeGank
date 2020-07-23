@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="android.view.View" />
+        <variable
+            name="common"
+            type="com.xuantang.awesomegank.model.ArticleResponse.ArticleModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/press_effect_white_bg"
+        android:paddingLeft="15dp"
+        android:paddingTop="14dp"
+        android:paddingRight="15dp"
+        android:paddingBottom="12dp">
+
+        <TextView
+            android:id="@+id/tv_desc"
+            style="@style/item_desc"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:includeFontPadding="false"
+            android:letterSpacing="0.02"
+            android:lineSpacingExtra="4dp"
+            android:text="@{common.desc.replace('\n',' ').trim()}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:targetApi="lollipop"
+            tools:text="一个具有多种视图类型，内部水平RecyclerView和布局动画的RecyclerView" />
+
+        <com.xuantang.awesomegank.components.NineGridImageLayout
+            android:id="@+id/layout_nine_grid"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:visibility="@{common.images==null ? View.GONE:View.VISIBLE}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_desc"
+            tools:visibility="gone" />
+
+        <TextView
+            android:id="@+id/tv_author"
+            style="@style/item_author"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@{`via. `+common.author}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/layout_nine_grid"
+            tools:text="via. xuantang" />
+
+
+        <TextView
+            android:id="@+id/tv_publish_time"
+            style="@style/item_author"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{common.publishedAt.substring(0,10).replace('-','.')}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_author"
+            tools:text="2018-09-03" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -64,6 +64,8 @@ dependencies {
     implementation(Deps.Room.ktx)
     implementation(Deps.Room.rxjava2)
 
+    implementation(Deps.ViewPager2)
+
     testImplementation(Deps.Test.junit)
     androidTestImplementation(Deps.Test.runner)
     androidTestImplementation(Deps.Test.espresso)
