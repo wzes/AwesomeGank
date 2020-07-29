@@ -1,33 +1,18 @@
 package com.xuantang.awesomegank.fragments.home
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.Animation
-import android.view.animation.AnimationUtils
-import android.widget.ImageView
-import androidx.appcompat.widget.LinearLayoutCompat
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.alibaba.android.arouter.launcher.ARouter
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
-import com.bumptech.glide.request.RequestOptions
 import com.xuantang.awesomegank.R
 import com.xuantang.awesomegank.adapter.ArticleAdapter
-import com.xuantang.awesomegank.components.NineGridImageLayout
-import com.xuantang.awesomegank.databinding.HomeItemArticleAdapterBinding
-import com.xuantang.awesomegank.databinding.HomeItemViewBinding
 import com.xuantang.awesomegank.extentions.no
 import com.xuantang.awesomegank.extentions.yes
-import com.xuantang.awesomegank.model.ArticleResponse
 import com.xuantang.awesomegank.viewmodel.ArticleViewModel
 import com.xuantang.awesomegank.viewmodel.RefreshViewModel
 import kotlinx.android.synthetic.main.fragment_tab.*
@@ -49,6 +34,7 @@ class TabFragment(private val category: String, private val position: Int) : Fra
 
     private var page: Int = 1
     private var hasMore: Boolean = true
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -93,6 +79,7 @@ class TabFragment(private val category: String, private val position: Int) : Fra
     override fun onDestroy() {
         super.onDestroy()
         isFirstVisible = true
+        isInit = false
     }
 
     override fun onResume() {

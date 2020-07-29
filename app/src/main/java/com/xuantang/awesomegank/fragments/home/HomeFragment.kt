@@ -1,28 +1,31 @@
 package com.xuantang.awesomegank.fragments.home
 
 import android.os.Build
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.appcompat.widget.AppCompatImageView
+import androidx.appcompat.widget.AppCompatTextView
+import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.RecyclerView
+import com.alibaba.android.arouter.launcher.ARouter
+import com.aminography.redirectglide.GlideApp
 import com.xuantang.awesomegank.R
 import com.xuantang.awesomegank.activities.MainActivity
 import com.xuantang.awesomegank.adapter.ImageBannerAdapter
 import com.xuantang.awesomegank.extentions.dp
 import com.xuantang.awesomegank.extentions.getStatusBarHeight
 import com.xuantang.awesomegank.fragments.LazyFragment
+import com.xuantang.awesomegank.model.KingKong
 import com.xuantang.awesomegank.viewmodel.BannerViewModel
 import com.xuantang.awesomegank.viewmodel.RefreshViewModel
 import com.youth.banner.indicator.CircleIndicator
 import kotlinx.android.synthetic.main.fragment_home.*
-
 
 class HomeFragment : LazyFragment(), MainActivity.OnTabChangeListener {
     private val contentTopPadding: Lazy<Int?> = lazy { context?.getStatusBarHeight() }
@@ -32,6 +35,14 @@ class HomeFragment : LazyFragment(), MainActivity.OnTabChangeListener {
     private var pagerAdapter: FragmentStatePagerAdapter? = null
     private var onStickyListeners: ArrayList<OnStickyListener> = ArrayList()
     private var onRefreshListeners: ArrayList<OnRefreshListener> = ArrayList()
+
+    private val kingKongs: ArrayList<KingKong> = arrayListOf(
+        KingKong("Android", "/article/list", "https://png.pngtree.com/png-vector/20191025/ourlarge/pngtree-beautiful-android-logo-vector-glyph-icon-png-image_1869973.jpg", "Android"),
+        KingKong("iOS",  "/article/list", "https://png.pngtree.com/png-vector/20191025/ourlarge/pngtree-beautiful-android-logo-vector-glyph-icon-png-image_1869973.jpg", "iOS"),
+        KingKong("前端", "/article/list", "https://png.pngtree.com/png-vector/20191025/ourlarge/pngtree-beautiful-android-logo-vector-glyph-icon-png-image_1869973.jpg", "前端"),
+        KingKong("休息视频",  "/article/list", "https://png.pngtree.com/png-vector/20191025/ourlarge/pngtree-beautiful-android-logo-vector-glyph-icon-png-image_1869973.jpg", "休息视频"),
+        KingKong("拓展资源",  "/article/list", "https://png.pngtree.com/png-vector/20191025/ourlarge/pngtree-beautiful-android-logo-vector-glyph-icon-png-image_1869973.jpg", "拓展资源")
+    )
 
     private val bannerModel by lazy(LazyThreadSafetyMode.NONE) {
         ViewModelProviders.of(this).get(BannerViewModel::class.java)
@@ -87,7 +98,8 @@ class HomeFragment : LazyFragment(), MainActivity.OnTabChangeListener {
         val lp = search_btn.layoutParams as ViewGroup.MarginLayoutParams
         lp.topMargin = context?.dp(5)?.plus((this.contentTopPadding.value ?: 0)) ?: 10
         search_btn.setOnClickListener {
-            Toast.makeText(context, "search ~", Toast.LENGTH_SHORT).show()
+            ARouter.getInstance().build("/search/")
+                .navigation()
         }
         search_btn.text = "五月狂欢节🎉"
 
@@ -148,8 +160,32 @@ class HomeFragment : LazyFragment(), MainActivity.OnTabChangeListener {
             (activity as MainActivity).addOnTabChangeListener(this)
         }
 
-        val viewFixed = LayoutInflater.from(context).inflate(R.layout.home_fixed, home_linear_container, false)
-        home_linear_container.addView(viewFixed, 0)
+        // 金刚位
+        home_linear_container.addView(getKingKongView(), 0)
+    }
+
+    private fun getKingKongView(): View {
+        val root = LinearLayoutCompat(context).apply {
+            orientation = LinearLayoutCompat.HORIZONTAL
+        }
+        for (kingKong in kingKongs) {
+            val item: LinearLayoutCompat = LayoutInflater.from(context).inflate(R.layout.home_fixed_item, root, false) as LinearLayoutCompat
+            item.apply {
+                (layoutParams as LinearLayoutCompat.LayoutParams).weight = 1f
+                layoutParams.width = 0
+            }
+            val textView = item.findViewById<AppCompatTextView>(R.id.kingkong_title)
+            textView.text = kingKong.title
+            GlideApp.with(context!!).load(kingKong.icon).into(item.findViewById<AppCompatImageView>(R.id.kingkong_image))
+            item.setOnClickListener {
+                ARouter.getInstance().build(kingKong.scheme)
+                    .withString("category", kingKong.category)
+                    .withString("title", kingKong.title)
+                    .navigation()
+            }
+            root.addView(item)
+        }
+        return root
     }
 
     private fun refresh() {

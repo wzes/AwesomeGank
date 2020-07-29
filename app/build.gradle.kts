@@ -3,6 +3,7 @@ plugins {
     kotlin("android")
     kotlin("kapt")
     kotlin("android.extensions")
+    id("kotlin-android")
 }
 
 
@@ -56,6 +57,8 @@ dependencies {
     implementation(Deps.Glide.redirect)
     implementation(Deps.Arouter.api)
     implementation(Deps.LifecycleExtensions)
+    implementation("androidx.appcompat:appcompat:1.1.0")
+    implementation("androidx.constraintlayout:constraintlayout:1.1.3")
     kapt (Deps.Arouter.compiler)
     implementation(Deps.Banner)
 

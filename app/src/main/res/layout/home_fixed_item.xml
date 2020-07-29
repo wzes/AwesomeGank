@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    android:elevation="5dp"
+    android:orientation="vertical">
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_height="60dp"
+        android:layout_width="60dp"
+        android:elevation="5dp"
+        android:id="@+id/kingkong_image"
+        tools:src="@drawable/ic_book"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center_horizontal">
+    </androidx.appcompat.widget.AppCompatImageView>
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:text="安卓"
+        android:id="@+id/kingkong_title"
+        android:layout_marginTop="5dp"
+        android:textAlignment="center">
+    </androidx.appcompat.widget.AppCompatTextView>
+</androidx.appcompat.widget.LinearLayoutCompat>

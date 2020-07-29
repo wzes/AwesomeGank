@@ -3,6 +3,7 @@ package com.xuantang.awesomegank.service
 import com.xuantang.awesomegank.model.Banner
 import com.xuantang.awesomegank.model.Daily
 import com.xuantang.awesomegank.model.ArticleResponse
+import com.xuantang.awesomegank.model.NoImageArticleResponse
 import com.xuantang.awesomegank.service.utils.retrofit
 import io.reactivex.Observable
 import retrofit2.http.GET
@@ -16,6 +17,12 @@ interface DataApi {
         @Path("page") page: Int
     ): Observable<ArticleResponse>
 
+    @GET("data/{type}/{count}/{page}")
+    fun getNoImageDataOfType(
+        @Path("type") type: String,
+        @Path("count") count: Int,
+        @Path("page") page: Int
+    ): Observable<NoImageArticleResponse>
 
     @GET("v2/data/category/Girl/type/Girl/page/{page}/count/{count}")
     fun getFuli(@Path("count") count: Int,
