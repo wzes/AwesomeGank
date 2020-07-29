@@ -25,6 +25,7 @@ abstract class LazyFragment : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
+        isInit = false
         isFirstVisible = true
     }
 
