@@ -17,6 +17,15 @@ interface DataApi {
         @Path("page") page: Int
     ): Observable<ArticleResponse>
 
+    @GET("v2/search/{key}/category/{category}/type/{type}/page/{page}/count/{count}")
+    fun search(
+        @Path("key") key: String,
+        @Path("category") category: String,
+        @Path("type") type: String,
+        @Path("count") count: Int,
+        @Path("page") page: Int
+    ): Observable<ArticleResponse>
+
     @GET("data/{type}/{count}/{page}")
     fun getNoImageDataOfType(
         @Path("type") type: String,

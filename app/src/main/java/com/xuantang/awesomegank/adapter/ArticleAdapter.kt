@@ -1,6 +1,7 @@
 package com.xuantang.awesomegank.adapter
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,7 +23,7 @@ import com.xuantang.awesomegank.extentions.yes
 import com.xuantang.awesomegank.fragments.home.TabFragment
 import com.xuantang.awesomegank.model.ArticleResponse
 
-class ArticleAdapter(private val fragment: TabFragment,
+class ArticleAdapter(private val context: Context,
                      private var data: List<ArticleResponse.ArticleModel>?,
                      private var hasMore: Boolean,
                      private var loadMore: () -> Unit) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -135,7 +136,7 @@ class ArticleAdapter(private val fragment: TabFragment,
             mImageView = layout.findViewById(R.id.home_item_loading)
         }
         fun bind() {
-            val rotateAnimation: Animation = AnimationUtils.loadAnimation(fragment.context, R.anim.home_loading_item)
+            val rotateAnimation: Animation = AnimationUtils.loadAnimation(context, R.anim.home_loading_item)
             mImageView?.startAnimation(rotateAnimation)
         }
     }

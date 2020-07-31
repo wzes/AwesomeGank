@@ -10,6 +10,7 @@
     <color name="yellow">#FBBC05</color>
     <color name="red">#EA4335</color>
     <color name="white">#ffffff</color>
+    <color name="transparent">#00ffffff</color>
     <color name="darkBlue">#4E587E</color>
     <color name="greyBlue1">#9A9DAF</color>
     <color name="greyBlue0">#CCCDD6</color>

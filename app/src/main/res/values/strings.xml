@@ -10,4 +10,6 @@
     <string name="share">分享</string>
     <string name="copy">复制链接</string>
     <string name="refresh">刷新</string>
+    <string name="search_text">搜索</string>
+    <string name="search_cancel">取消</string>
 </resources>

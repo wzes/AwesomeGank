@@ -47,10 +47,13 @@ class TabFragment(private val category: String, private val position: Int) : Fra
     }
 
     private fun initView() {
-        home_tab_recyclerview.adapter = ArticleAdapter(this, articleModel.getArticleData().value, hasMore) {
-            // loadMore
-            articleModel.fetch(category, ++page)
-        }
+        home_tab_recyclerview.adapter =
+            context?.let {
+                ArticleAdapter(it, articleModel.getArticleData().value, hasMore) {
+                    // loadMore
+                    articleModel.fetch(category, ++page)
+                }
+            }
         home_tab_recyclerview.layoutManager = LinearLayoutManager(context)
         HomeFragment.newInstance().addRefreshListener(this)
         HomeFragment.newInstance().addStickyListener(this)
