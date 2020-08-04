@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.xuantang.awesomegank.R
@@ -23,13 +22,11 @@ class TabFragment(private val category: String, private val position: Int) : Fra
     private var isInit = false
     private var isFirstVisible = true
     private val articleModel by lazy(LazyThreadSafetyMode.NONE) {
-        ViewModelProviders.of(this).get(ArticleViewModel::class.java)
+        defaultViewModelProviderFactory.create(ArticleViewModel::class.java)
     }
 
     private val refreshModel by lazy(LazyThreadSafetyMode.NONE) {
-        activity?.let {
-            ViewModelProviders.of(it).get(RefreshViewModel::class.java)
-        }
+        activity?.defaultViewModelProviderFactory?.create(RefreshViewModel::class.java)
     }
 
     private var page: Int = 1
