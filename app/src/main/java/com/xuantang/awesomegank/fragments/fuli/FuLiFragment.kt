@@ -3,10 +3,7 @@ package com.xuantang.awesomegank.fragments.fuli
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
-import androidx.viewpager.widget.ViewPager
-import androidx.viewpager2.widget.ViewPager2
-import androidx.viewpager2.widget.ViewPager2.*
+import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.xuantang.awesomegank.R
 import com.xuantang.awesomegank.activities.MainActivity
 import com.xuantang.awesomegank.adapter.ImageAdapter
@@ -15,10 +12,8 @@ import com.xuantang.awesomegank.extentions.getStatusBarHeight
 import com.xuantang.awesomegank.extentions.otherwise
 import com.xuantang.awesomegank.extentions.yes
 import com.xuantang.awesomegank.fragments.LazyFragment
-import com.xuantang.awesomegank.viewmodel.ArticleViewModel
 import com.xuantang.awesomegank.viewmodel.FuliViewModel
 import kotlinx.android.synthetic.main.fragment_fuli.*
-import kotlinx.android.synthetic.main.fragment_home.*
 
 class FuLiFragment : LazyFragment() {
     private val contentTopPadding: Lazy<Int?> = lazy { context?.getStatusBarHeight() }
@@ -28,7 +23,7 @@ class FuLiFragment : LazyFragment() {
     private var mNavVisible: Boolean = true
     private var mImageAdapter: ImageAdapter? = null
     private val fuliModel by lazy(LazyThreadSafetyMode.NONE) {
-        ViewModelProviders.of(this).get(FuliViewModel::class.java)
+        defaultViewModelProviderFactory.create(FuliViewModel::class.java)
     }
 
     override fun getData() {

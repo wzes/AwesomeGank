@@ -11,7 +11,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.RecyclerView
 import com.alibaba.android.arouter.launcher.ARouter
 import com.aminography.redirectglide.GlideApp
@@ -45,13 +44,11 @@ class HomeFragment : LazyFragment(), MainActivity.OnTabChangeListener {
     )
 
     private val bannerModel by lazy(LazyThreadSafetyMode.NONE) {
-        ViewModelProviders.of(this).get(BannerViewModel::class.java)
+        defaultViewModelProviderFactory.create(BannerViewModel::class.java)
     }
 
     private val refreshModel by lazy(LazyThreadSafetyMode.NONE) {
-        activity?.let {
-            ViewModelProviders.of(it).get(RefreshViewModel::class.java)
-        }
+        requireActivity().defaultViewModelProviderFactory.create(RefreshViewModel::class.java)
     }
 
     companion object {

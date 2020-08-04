@@ -1,5 +1,6 @@
 package com.xuantang.awesomegank.components
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import android.view.MotionEvent
@@ -7,6 +8,7 @@ import android.view.VelocityTracker
 import android.view.View
 import androidx.core.view.ViewCompat
 import androidx.core.widget.NestedScrollView
+import com.xuantang.awesomegank.extentions.yes
 import com.xuantang.awesomegank.fragments.home.HomeFragment
 
 
@@ -70,6 +72,7 @@ class HomeNestedScrollView : NestedScrollView {
 
     private var mLastY = 0
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(ev: MotionEvent?): Boolean {
         initVelocityTrackerIfNotExists()
         mVelocityTracker?.addMovement(ev)
@@ -78,11 +81,15 @@ class HomeNestedScrollView : NestedScrollView {
                 mLastY = ev.y.toInt()
             }
             MotionEvent.ACTION_MOVE -> {
-                if (!canScrollVertically(1)) {
-                    val target = HomeFragment.newInstance().getCurrentRecyclerView()
-                    val dy = ev.y.toInt() - mLastY
-                    target?.scrollBy(0, -dy)
-                }
+//                val target = HomeFragment.newInstance().getCurrentRecyclerView()
+//                target?.canScrollVertically(-1)?.yes {
+//                    val dy = ev.y.toInt() - mLastY
+//                    target.scrollBy(0, -dy)
+//                }
+//                if (!canScrollVertically(1)) {
+//                    val dy = ev.y.toInt() - mLastY
+//                    target?.scrollBy(0, -dy)
+//                }
                 mLastY = ev.y.toInt()
             }
             MotionEvent.ACTION_UP -> {

@@ -2,21 +2,21 @@ package com.xuantang.awesomegank.fragments.list
 
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelStore
+import androidx.lifecycle.ViewModelStoreOwner
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.xuantang.awesomegank.R
 import com.xuantang.awesomegank.adapter.ArticleListAdapter
 import com.xuantang.awesomegank.fragments.LazyFragment
 import com.xuantang.awesomegank.viewmodel.NoImageArticleViewModel
 import kotlinx.android.synthetic.main.fragment_article_list.*
-import kotlinx.android.synthetic.main.fragment_tab.*
-import kotlinx.android.synthetic.main.home_fixed_item.*
 
 class ArticleListFragment(private val category: String) : LazyFragment() {
     private var page: Int = 1
     private var hasMore: Boolean = true
 
     private val articleModel by lazy(LazyThreadSafetyMode.NONE) {
-        ViewModelProviders.of(this).get(NoImageArticleViewModel::class.java)
+        defaultViewModelProviderFactory.create(NoImageArticleViewModel::class.java)
     }
 
     override fun getData() {
@@ -41,9 +41,11 @@ class ArticleListFragment(private val category: String) : LazyFragment() {
             // loadMore
             articleModel.fetch(category, ++page)
         }
+
         article_recycle_view.layoutManager = LinearLayoutManager(context)
 
         article_toolbar.title = category
+
 
         article_toolbar.navigationIcon = resources.getDrawable(R.drawable.ic_back, null)
         article_toolbar.setNavigationOnClickListener {
