@@ -1,9 +1,18 @@
 package com.xuantang.awesomegank.fragments.home
 
+import android.animation.Animator
+import android.animation.ObjectAnimator
+import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Build
+import android.os.Handler
+import android.os.Message
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AccelerateDecelerateInterpolator
+import android.widget.FrameLayout
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.appcompat.widget.LinearLayoutCompat
@@ -11,14 +20,18 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.RecyclerView
 import com.alibaba.android.arouter.launcher.ARouter
 import com.aminography.redirectglide.GlideApp
 import com.xuantang.awesomegank.R
 import com.xuantang.awesomegank.activities.MainActivity
 import com.xuantang.awesomegank.adapter.ImageBannerAdapter
+import com.xuantang.awesomegank.components.HomeNestedScrollView
 import com.xuantang.awesomegank.extentions.dp
 import com.xuantang.awesomegank.extentions.getStatusBarHeight
+import com.xuantang.awesomegank.extentions.no
+import com.xuantang.awesomegank.extentions.yes
 import com.xuantang.awesomegank.fragments.LazyFragment
 import com.xuantang.awesomegank.model.KingKong
 import com.xuantang.awesomegank.viewmodel.BannerViewModel
@@ -35,12 +48,44 @@ class HomeFragment : LazyFragment(), MainActivity.OnTabChangeListener {
     private var onStickyListeners: ArrayList<OnStickyListener> = ArrayList()
     private var onRefreshListeners: ArrayList<OnRefreshListener> = ArrayList()
 
+    private var showFuliAnimator: ObjectAnimator? = null
+    private var hideFuliAnimator: ObjectAnimator? = null
+    private var isFuliHiding: Boolean = false
+    private var isFuliShowing: Boolean = true
+    private var sticky: Boolean = false
+    private var curScrollTime = System.currentTimeMillis()
+
     private val kingKongs: ArrayList<KingKong> = arrayListOf(
-        KingKong("Android", "/article/list", "https://png.pngtree.com/png-vector/20191025/ourlarge/pngtree-beautiful-android-logo-vector-glyph-icon-png-image_1869973.jpg", "Android"),
-        KingKong("iOS",  "/article/list", "https://png.pngtree.com/png-vector/20191025/ourlarge/pngtree-beautiful-android-logo-vector-glyph-icon-png-image_1869973.jpg", "iOS"),
-        KingKong("前端", "/article/list", "https://png.pngtree.com/png-vector/20191025/ourlarge/pngtree-beautiful-android-logo-vector-glyph-icon-png-image_1869973.jpg", "前端"),
-        KingKong("休息视频",  "/article/list", "https://png.pngtree.com/png-vector/20191025/ourlarge/pngtree-beautiful-android-logo-vector-glyph-icon-png-image_1869973.jpg", "休息视频"),
-        KingKong("拓展资源",  "/article/list", "https://png.pngtree.com/png-vector/20191025/ourlarge/pngtree-beautiful-android-logo-vector-glyph-icon-png-image_1869973.jpg", "拓展资源")
+        KingKong(
+            "Android",
+            "/article/list",
+            "https://png.pngtree.com/png-vector/20191025/ourlarge/pngtree-beautiful-android-logo-vector-glyph-icon-png-image_1869973.jpg",
+            "Android"
+        ),
+        KingKong(
+            "iOS",
+            "/article/list",
+            "https://png.pngtree.com/png-vector/20191025/ourlarge/pngtree-beautiful-android-logo-vector-glyph-icon-png-image_1869973.jpg",
+            "iOS"
+        ),
+        KingKong(
+            "前端",
+            "/article/list",
+            "https://png.pngtree.com/png-vector/20191025/ourlarge/pngtree-beautiful-android-logo-vector-glyph-icon-png-image_1869973.jpg",
+            "前端"
+        ),
+        KingKong(
+            "休息视频",
+            "/article/list",
+            "https://png.pngtree.com/png-vector/20191025/ourlarge/pngtree-beautiful-android-logo-vector-glyph-icon-png-image_1869973.jpg",
+            "休息视频"
+        ),
+        KingKong(
+            "拓展资源",
+            "/article/list",
+            "https://png.pngtree.com/png-vector/20191025/ourlarge/pngtree-beautiful-android-logo-vector-glyph-icon-png-image_1869973.jpg",
+            "拓展资源"
+        )
     )
 
     private val bannerModel by lazy(LazyThreadSafetyMode.NONE) {
@@ -48,7 +93,8 @@ class HomeFragment : LazyFragment(), MainActivity.OnTabChangeListener {
     }
 
     private val refreshModel by lazy(LazyThreadSafetyMode.NONE) {
-        requireActivity().defaultViewModelProviderFactory.create(RefreshViewModel::class.java)
+        ViewModelProviders.of(activity!!).get(RefreshViewModel::class.java)
+//        requireActivity().defaultViewModelProviderFactory.create(RefreshViewModel::class.java)
     }
 
     companion object {
@@ -82,7 +128,7 @@ class HomeFragment : LazyFragment(), MainActivity.OnTabChangeListener {
 
         bannerModel.init()
 
-        refreshModel?.getRefreshState()?.observe(this, Observer  {
+        refreshModel.getRefreshState().observe(this, Observer {
             home_refresh.isRefreshing = it == 1
         })
     }
@@ -91,6 +137,7 @@ class HomeFragment : LazyFragment(), MainActivity.OnTabChangeListener {
         onStickyListeners.add(listener)
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun initView() {
         val lp = search_btn.layoutParams as ViewGroup.MarginLayoutParams
         lp.topMargin = context?.dp(5)?.plus((this.contentTopPadding.value ?: 0)) ?: 10
@@ -108,7 +155,8 @@ class HomeFragment : LazyFragment(), MainActivity.OnTabChangeListener {
 
         home_viewpager.post {
             home_viewpager.apply {
-                layoutParams.height = home_container.measuredHeight - stickyMarginTop - home_viewpager.dp(50)
+                layoutParams.height =
+                    home_container.measuredHeight - stickyMarginTop - home_viewpager.dp(50)
             }
         }
 
@@ -121,7 +169,7 @@ class HomeFragment : LazyFragment(), MainActivity.OnTabChangeListener {
         if (activity?.supportFragmentManager != null) {
             pagerAdapter = FSPagerAdapter(
                 activity?.supportFragmentManager!!,
-                FragmentStatePagerAdapter.BEHAVIOR_SET_USER_VISIBLE_HINT
+                FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
             )
             home_viewpager.adapter = pagerAdapter
         }
@@ -135,8 +183,35 @@ class HomeFragment : LazyFragment(), MainActivity.OnTabChangeListener {
             refresh()
         }
 
+        home_fuli.setOnClickListener {
+            ARouter.getInstance().build("/fuli/")
+                .navigation()
+        }
+
+        home_scrollview.addTouchListener(object : HomeNestedScrollView.OnTouchListener {
+            override fun onTouch(ev: MotionEvent?) {
+                // 处理福利
+                home_scrollview.postDelayed({
+                    isFuliHiding.no {
+                        isFuliHiding = true
+                        hideFuliImageAnimation(context!!)
+                    }
+                }, 500)
+
+                curScrollTime = System.currentTimeMillis()
+                home_scrollview.postDelayed({
+                    val diff = System.currentTimeMillis() - curScrollTime
+                    if (diff < 2000) {
+                        return@postDelayed
+                    }
+                    isFuliShowing.no {
+                        isFuliShowing = true
+                        showFuliImageAnimation(context!!)
+                    }
+                }, 2000)
+            }
+        })
         //  滑动监听
-        var sticky: Boolean = false
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             home_scrollview.setOnScrollChangeListener { _, _, scrollY, _, _ ->
                 // 背景
@@ -159,6 +234,63 @@ class HomeFragment : LazyFragment(), MainActivity.OnTabChangeListener {
 
         // 金刚位
         home_linear_container.addView(getKingKongView(), 0)
+
+        // 福利
+        home_container.post {
+            home_fuli.apply {
+                val layoutParams = layoutParams as FrameLayout.LayoutParams
+                layoutParams.topMargin = home_container.bottom - dp(100)
+                layoutParams.leftMargin = home_container.right - dp(55)
+                radius = dp(50).toFloat()
+            }
+        }
+    }
+
+    private fun hideFuliImageAnimation(context: Context) {
+        hideFuliAnimator = ObjectAnimator.ofFloat(home_fuli, "translationX", 0f, context.dp(30f).toFloat()).apply {
+            interpolator = AccelerateDecelerateInterpolator()
+            duration = 500
+            addListener(object : Animator.AnimatorListener {
+                override fun onAnimationStart(animation: Animator?) {
+                }
+
+                override fun onAnimationEnd(animation: Animator?) {
+                    home_fuli.alpha = 0.5f
+                    isFuliShowing = false
+                }
+
+                override fun onAnimationCancel(animation: Animator?) {
+                }
+
+                override fun onAnimationRepeat(animation: Animator?) {
+                }
+            })
+        }
+        hideFuliAnimator?.start()
+    }
+
+    private fun showFuliImageAnimation(context: Context) {
+        showFuliAnimator = ObjectAnimator.ofFloat(home_fuli, "translationX", context.dp(30f).toFloat(), context.dp(0f).toFloat()).apply {
+            interpolator = AccelerateDecelerateInterpolator()
+            duration = 500
+            addListener(object : Animator.AnimatorListener {
+                override fun onAnimationStart(animation: Animator?) {
+                }
+
+                override fun onAnimationEnd(animation: Animator?) {
+                    home_fuli.alpha = 1f
+                    isFuliHiding = false
+                }
+
+                override fun onAnimationCancel(animation: Animator?) {
+                    isFuliHiding = false
+                }
+
+                override fun onAnimationRepeat(animation: Animator?) {
+                }
+            })
+        }
+        showFuliAnimator?.start()
     }
 
     private fun getKingKongView(): View {
@@ -166,14 +298,16 @@ class HomeFragment : LazyFragment(), MainActivity.OnTabChangeListener {
             orientation = LinearLayoutCompat.HORIZONTAL
         }
         for (kingKong in kingKongs) {
-            val item: LinearLayoutCompat = LayoutInflater.from(context).inflate(R.layout.home_fixed_item, root, false) as LinearLayoutCompat
+            val item: LinearLayoutCompat = LayoutInflater.from(context)
+                .inflate(R.layout.home_fixed_item, root, false) as LinearLayoutCompat
             item.apply {
                 (layoutParams as LinearLayoutCompat.LayoutParams).weight = 1f
                 layoutParams.width = 0
             }
             val textView = item.findViewById<AppCompatTextView>(R.id.kingkong_title)
             textView.text = kingKong.title
-            GlideApp.with(context!!).load(kingKong.icon).into(item.findViewById<AppCompatImageView>(R.id.kingkong_image))
+            GlideApp.with(context!!).load(kingKong.icon)
+                .into(item.findViewById<AppCompatImageView>(R.id.kingkong_image))
             item.setOnClickListener {
                 ARouter.getInstance().build(kingKong.scheme)
                     .withString("category", kingKong.category)
@@ -186,7 +320,7 @@ class HomeFragment : LazyFragment(), MainActivity.OnTabChangeListener {
     }
 
     private fun refresh() {
-        refreshModel?.setRefresh(1)
+        refreshModel.setRefresh(1)
         for (onRefreshListener in onRefreshListeners) {
             onRefreshListener.onRefresh(home_viewpager.currentItem)
         }

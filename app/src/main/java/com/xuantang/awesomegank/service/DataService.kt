@@ -1,9 +1,6 @@
 package com.xuantang.awesomegank.service
 
-import com.xuantang.awesomegank.model.Banner
-import com.xuantang.awesomegank.model.Daily
-import com.xuantang.awesomegank.model.ArticleResponse
-import com.xuantang.awesomegank.model.NoImageArticleResponse
+import com.xuantang.awesomegank.model.*
 import com.xuantang.awesomegank.service.utils.retrofit
 import io.reactivex.Observable
 import retrofit2.http.GET
@@ -25,6 +22,14 @@ interface DataApi {
         @Path("count") count: Int,
         @Path("page") page: Int
     ): Observable<ArticleResponse>
+
+    @GET("v2/hot/{type}/category/{category}/count/{count}")
+    fun getHotList(
+        @Path("category") category: String,
+        @Path("type") type: String,
+        @Path("count") count: Int
+    ): Observable<HotResponse>
+
 
     @GET("data/{type}/{count}/{page}")
     fun getNoImageDataOfType(

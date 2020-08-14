@@ -72,4 +72,11 @@
             </com.xuantang.awesomegank.components.HomeNestedScrollView>
         </androidx.appcompat.widget.LinearLayoutCompat>
     </com.xuantang.awesomegank.components.HomeSwipeRefreshView>
+
+    <com.xuantang.awesomegank.components.RoundCornerImageView
+        android:id="@+id/home_fuli"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:elevation="5dp"
+        android:src="@drawable/home_fuli" />
 </FrameLayout>

@@ -16,8 +16,9 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
-        <activity android:name=".activities.SearchActivity"></activity>
+        <activity android:name=".activities.SearchActivity"/>
         <activity android:name=".activities.ArticleListActivity" />
+        <activity android:name=".activities.FuliActivity"/>
         <activity android:name=".activities.WebActivity">
             <intent-filter>
                 <data android:scheme="xuantang" />

@@ -8,7 +8,6 @@ import android.view.VelocityTracker
 import android.view.View
 import androidx.core.view.ViewCompat
 import androidx.core.widget.NestedScrollView
-import com.xuantang.awesomegank.extentions.yes
 import com.xuantang.awesomegank.fragments.home.HomeFragment
 
 
@@ -18,10 +17,16 @@ class HomeNestedScrollView : NestedScrollView {
 
     private var mPullDownY: Int = 0
     private var mOnPullListeners: ArrayList<OnPullListener> = ArrayList()
+    private var mOnTouchListeners: ArrayList<OnTouchListener> = ArrayList()
 
     private var mVelocityTracker: VelocityTracker? = null
+
     fun addPullListener(l: OnPullListener) {
         this.mOnPullListeners.add(l)
+    }
+
+    fun addTouchListener(l: OnTouchListener) {
+        this.mOnTouchListeners.add(l)
     }
 
     override fun onStartNestedScroll(child: View, target: View, axes: Int, type: Int): Boolean {
@@ -60,6 +65,13 @@ class HomeNestedScrollView : NestedScrollView {
         }
     }
 
+    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+        for (l in mOnTouchListeners) {
+            l.onTouch(ev)
+        }
+        return super.dispatchTouchEvent(ev)
+    }
+
     override fun stopNestedScroll(type: Int) {
         super.stopNestedScroll(type)
         mPullDownY = 0
@@ -84,11 +96,15 @@ class HomeNestedScrollView : NestedScrollView {
 //                val target = HomeFragment.newInstance().getCurrentRecyclerView()
 //                target?.canScrollVertically(-1)?.yes {
 //                    val dy = ev.y.toInt() - mLastY
-//                    target.scrollBy(0, -dy)
+//                    if (dy > 0) {
+////                        target.scrollBy(0, -dy)
+//                        target.dispatchTouchEvent(ev)
+//                        return false
+//                    }
 //                }
 //                if (!canScrollVertically(1)) {
 //                    val dy = ev.y.toInt() - mLastY
-//                    target?.scrollBy(0, -dy)
+//                                                      target?.scrollBy(0, -dy)
 //                }
                 mLastY = ev.y.toInt()
             }
@@ -124,5 +140,9 @@ class HomeNestedScrollView : NestedScrollView {
     interface OnPullListener {
         fun onPull(down: Int)
         fun onPullEnd()
+    }
+
+    interface OnTouchListener {
+        fun onTouch(ev: MotionEvent?)
     }
 }

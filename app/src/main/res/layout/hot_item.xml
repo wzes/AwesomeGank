@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="android.view.View" />
+        <variable
+            name="common"
+            type="com.xuantang.awesomegank.model.HotResponse.HotItemModel" />
+    </data>
+
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/press_effect_white_bg"
+        android:paddingLeft="15dp"
+        android:paddingTop="10dp"
+        android:paddingRight="15dp"
+        android:paddingBottom="10dp"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/tv_rank"
+            android:layout_width="35dp"
+            android:layout_height="wrap_content"
+            tools:text="1"
+            android:fontFamily="sans-serif-black"
+            android:textStyle="bold"
+            android:textColor="@color/red"
+            android:gravity="center"/>
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:includeFontPadding="false"
+            android:singleLine="true"
+            android:text="@{common.desc.replace('\n',' ').trim()}"
+            tools:targetApi="lollipop"
+            tools:text="一个具有多种视图类型，内部水平RecyclerView和布局动画的RecyclerView" />
+
+        <TextView
+            android:id="@+id/tv_count"
+            android:layout_width="50dp"
+            android:textAlignment="textEnd"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_author"
+            tools:text="123" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</layout>

@@ -20,7 +20,7 @@ class FuLiFragment : LazyFragment() {
 
 
     private var page = 1
-    private var mNavVisible: Boolean = true
+    private var mNavVisible: Boolean = false
     private var mImageAdapter: ImageAdapter? = null
     private val fuliModel by lazy(LazyThreadSafetyMode.NONE) {
         defaultViewModelProviderFactory.create(FuliViewModel::class.java)
@@ -73,10 +73,8 @@ class FuLiFragment : LazyFragment() {
     private fun reverseNav() {
         mNavVisible.yes {
             fuli_titlerbar.visibility = View.VISIBLE
-            (activity as MainActivity).setBottomNavVisible(View.VISIBLE)
         } otherwise {
             fuli_titlerbar.visibility = View.GONE
-            (activity as MainActivity).setBottomNavVisible(View.GONE)
         }
         mNavVisible = !mNavVisible
     }
@@ -85,8 +83,7 @@ class FuLiFragment : LazyFragment() {
         private var instance: FuLiFragment? = null
         fun newInstance(): FuLiFragment {
             if (instance == null) {
-                instance =
-                    FuLiFragment()
+                instance = FuLiFragment()
             }
             return instance!!
         }
