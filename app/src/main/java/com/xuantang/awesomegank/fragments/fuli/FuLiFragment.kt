@@ -5,7 +5,6 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.xuantang.awesomegank.R
-import com.xuantang.awesomegank.activities.MainActivity
 import com.xuantang.awesomegank.adapter.ImageAdapter
 import com.xuantang.awesomegank.extentions.dp
 import com.xuantang.awesomegank.extentions.getStatusBarHeight
