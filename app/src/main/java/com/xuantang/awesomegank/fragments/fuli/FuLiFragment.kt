@@ -3,6 +3,7 @@ package com.xuantang.awesomegank.fragments.fuli
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.xuantang.awesomegank.R
 import com.xuantang.awesomegank.adapter.ImageAdapter
@@ -22,7 +23,7 @@ class FuLiFragment : LazyFragment() {
     private var mNavVisible: Boolean = false
     private var mImageAdapter: ImageAdapter? = null
     private val fuliModel by lazy(LazyThreadSafetyMode.NONE) {
-        defaultViewModelProviderFactory.create(FuliViewModel::class.java)
+        ViewModelProvider(this).get(FuliViewModel::class.java)
     }
 
     override fun getData() {

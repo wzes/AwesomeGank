@@ -4,12 +4,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.app.ActivityOptionsCompat
+import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.xuantang.awesomegank.R
+import com.xuantang.awesomegank.activities.ImageActivity
 import com.xuantang.awesomegank.adapter.ArticleAdapter
 import com.xuantang.awesomegank.extentions.no
 import com.xuantang.awesomegank.extentions.yes
@@ -22,13 +25,14 @@ class TabFragment(private val category: String, private val position: Int) : Fra
     HomeFragment.OnRefreshListener, HomeFragment.OnStickyListener {
     private var isInit = false
     private var isFirstVisible = true
+
+    private var adapter: ArticleAdapter? = null
     private val articleModel by lazy(LazyThreadSafetyMode.NONE) {
-        defaultViewModelProviderFactory.create(ArticleViewModel::class.java)
+        ViewModelProvider(this).get(ArticleViewModel::class.java)
     }
 
     private val refreshModel by lazy(LazyThreadSafetyMode.NONE) {
-        ViewModelProviders.of(activity!!).get(RefreshViewModel::class.java)
-//        requireActivity().defaultViewModelProviderFactory.create(RefreshViewModel::class.java)
+        ViewModelProvider(requireActivity()).get(RefreshViewModel::class.java)
     }
 
     private var page: Int = 1
@@ -46,13 +50,22 @@ class TabFragment(private val category: String, private val position: Int) : Fra
     }
 
     private fun initView() {
-        home_tab_recyclerview.adapter =
-            context?.let {
-                ArticleAdapter(it, articleModel.getArticleData().value, hasMore) {
-                    // loadMore
-                    articleModel.fetch(category, ++page)
-                }
+        context?.let {
+            adapter = ArticleAdapter(it, articleModel.getArticleData().value, hasMore) {
+                // loadMore
+                articleModel.fetch(category, ++page)
             }
+        }
+        home_tab_recyclerview.adapter = adapter
+
+        adapter?.setOnImageClick { v, position, imageList ->
+            val intent = ImageActivity.newIntent(activity!!, imageList, position)
+            val options = ViewCompat.getTransitionName(v)?.let {
+                ActivityOptionsCompat.makeSceneTransitionAnimation(activity!!, v, it)
+            }
+            startActivity(intent, options?.toBundle())
+        }
+
         home_tab_recyclerview.layoutManager = LinearLayoutManager(context)
         HomeFragment.newInstance().addRefreshListener(this)
         HomeFragment.newInstance().addStickyListener(this)

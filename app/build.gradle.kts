@@ -68,6 +68,7 @@ dependencies {
     implementation(Deps.Room.rxjava2)
 
     implementation(Deps.ViewPager2)
+    implementation("com.github.chrisbanes:PhotoView:2.1.3")
 
     testImplementation(Deps.Test.junit)
     androidTestImplementation(Deps.Test.runner)

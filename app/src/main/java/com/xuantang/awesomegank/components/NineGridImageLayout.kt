@@ -78,9 +78,7 @@ class NineGridImageLayout : ViewGroup {
                 view.setOnClickListener {
                     itemClickListener?.invoke(it, 0)
                 }
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    view.transitionName = "Image 0"
-                }
+                view.transitionName = "Image 0"
             }
             else -> {
                 var row: Int
@@ -99,9 +97,7 @@ class NineGridImageLayout : ViewGroup {
                     view.setOnClickListener {
                         itemClickListener?.invoke(it, index)
                     }
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        view.transitionName = "Image $index"
-                    }
+                    view.transitionName = "Image $index"
                 }
             }
         }

@@ -1,9 +1,6 @@
 package com.xuantang.awesomegank.fragments.list
 
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
-import androidx.lifecycle.ViewModelStore
-import androidx.lifecycle.ViewModelStoreOwner
+import androidx.lifecycle.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.xuantang.awesomegank.R
 import com.xuantang.awesomegank.adapter.ArticleListAdapter
@@ -16,7 +13,7 @@ class ArticleListFragment(private val category: String) : LazyFragment() {
     private var hasMore: Boolean = true
 
     private val articleModel by lazy(LazyThreadSafetyMode.NONE) {
-        defaultViewModelProviderFactory.create(NoImageArticleViewModel::class.java)
+        ViewModelProvider(this).get(NoImageArticleViewModel::class.java)
     }
 
     override fun getData() {

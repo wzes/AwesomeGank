@@ -5,8 +5,6 @@ import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Build
-import android.os.Handler
-import android.os.Message
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -20,6 +18,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.RecyclerView
 import com.alibaba.android.arouter.launcher.ARouter
@@ -31,7 +30,6 @@ import com.xuantang.awesomegank.components.HomeNestedScrollView
 import com.xuantang.awesomegank.extentions.dp
 import com.xuantang.awesomegank.extentions.getStatusBarHeight
 import com.xuantang.awesomegank.extentions.no
-import com.xuantang.awesomegank.extentions.yes
 import com.xuantang.awesomegank.fragments.LazyFragment
 import com.xuantang.awesomegank.model.KingKong
 import com.xuantang.awesomegank.viewmodel.BannerViewModel
@@ -93,8 +91,7 @@ class HomeFragment : LazyFragment(), MainActivity.OnTabChangeListener {
     }
 
     private val refreshModel by lazy(LazyThreadSafetyMode.NONE) {
-        ViewModelProviders.of(activity!!).get(RefreshViewModel::class.java)
-//        requireActivity().defaultViewModelProviderFactory.create(RefreshViewModel::class.java)
+        ViewModelProvider(requireActivity()).get(RefreshViewModel::class.java)
     }
 
     companion object {
@@ -113,7 +110,7 @@ class HomeFragment : LazyFragment(), MainActivity.OnTabChangeListener {
     }
 
     override fun getData() {
-        bannerModel.getBannerData().observe(this, Observer {
+        bannerModel.getData().observe(this, Observer {
             it?.let { data ->
                 banner.visibility = View.VISIBLE
                 banner.addBannerLifecycleObserver(this)
@@ -125,8 +122,6 @@ class HomeFragment : LazyFragment(), MainActivity.OnTabChangeListener {
         bannerModel.getError().observe(this, Observer {
             banner.visibility = View.GONE
         })
-
-        bannerModel.init()
 
         refreshModel.getRefreshState().observe(this, Observer {
             home_refresh.isRefreshing = it == 1

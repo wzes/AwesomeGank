@@ -27,6 +27,7 @@ class ArticleAdapter(private val context: Context,
                      private var data: List<ArticleResponse.ArticleModel>?,
                      private var hasMore: Boolean,
                      private var loadMore: () -> Unit) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    private var imageClickListener: ((v: View, position: Int, imageList: List<String>) -> Unit)? = null
 
     fun setHasMore(hasMore: Boolean) {
         this.hasMore = hasMore
@@ -85,8 +86,12 @@ class ArticleAdapter(private val context: Context,
         }
     }
 
+    fun setOnImageClick(click: (v: View, position: Int, imageList: List<String>) -> Unit) {
+        imageClickListener = click
+    }
+
     internal inner class ArticleViewHolder(private val binding: HomeItemArticleAdapterBinding) : RecyclerView.ViewHolder(binding.root) {
-        private var imageClickListener: ((v: View, position: Int, imageList: List<String>) -> Unit)? = null
+
         fun bind(item: ArticleResponse.ArticleModel) {
             binding.common = item
             binding.executePendingBindings()
@@ -94,6 +99,11 @@ class ArticleAdapter(private val context: Context,
                 ARouter.getInstance().build("/web/")
                     .withString("web_url", "https://gank.io/post/${item._id}")
                     .withString("title", item.desc)
+                    .withString("cover_url", if (item.images.isNotEmpty()) {
+                        item.images[0]
+                    } else {
+                        ""
+                    })
                     .navigation()
             }
             bindAfterExecute(binding, item)
@@ -117,11 +127,6 @@ class ArticleAdapter(private val context: Context,
             }
         }
 
-
-        fun setOnImageClick(click: (v: View, position: Int, imageList: List<String>) -> Unit) {
-            imageClickListener = click
-        }
-
         private fun NineGridImageLayout.setImageList(imageList: List<String>?, ratio: Float) {
             imageList?.isNotEmpty()?.let {
                 this.setData(imageList, ratio)
@@ -131,7 +136,7 @@ class ArticleAdapter(private val context: Context,
     }
 
     internal inner class LoadingViewHolder(layout: LinearLayoutCompat) : RecyclerView.ViewHolder(layout) {
-        var mImageView: ImageView? = null
+        private var mImageView: ImageView? = null
         init {
             mImageView = layout.findViewById(R.id.home_item_loading)
         }

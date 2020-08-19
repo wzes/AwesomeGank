@@ -12,7 +12,12 @@ open class BannerViewModel : RxViewModel() {
     private val bannerData: MutableLiveData<List<Banner.Item>> = MutableLiveData()
     private val rxError: MutableLiveData<Throwable> = MutableLiveData()
 
-    fun getBannerData(): LiveData<List<Banner.Item>> = bannerData
+
+    fun getData(): LiveData<List<Banner.Item>> {
+        getBanner()
+        return bannerData
+    }
+
     fun getError(): LiveData<Throwable> = rxError
 
     private fun getBanner() {
@@ -28,9 +33,5 @@ open class BannerViewModel : RxViewModel() {
                 }
             )
             .addDispose()
-    }
-
-    fun init() {
-        getBanner()
     }
 }

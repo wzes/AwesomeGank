@@ -9,8 +9,8 @@ import androidx.fragment.app.FragmentPagerAdapter
 import androidx.fragment.app.FragmentStatePagerAdapter
 import com.xuantang.awesomegank.R
 import com.xuantang.awesomegank.extentions.setStatusTransAndDarkIcon
+import com.xuantang.awesomegank.fragments.collection.CollectionFragment
 import com.xuantang.awesomegank.fragments.find.HotFragment
-import com.xuantang.awesomegank.fragments.fuli.FuLiFragment
 import com.xuantang.awesomegank.fragments.home.HomeFragment
 import com.xuantang.awesomegank.fragments.me.MeFragment
 import kotlinx.android.synthetic.main.activity_main.*
@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() {
             val position = when (p0.itemId) {
                 R.id.home -> 0
                 R.id.rank -> 1
-                R.id.fuli -> 2
+                R.id.collection -> 2
                 R.id.me -> 3
                 else -> 0
             }
@@ -54,7 +54,7 @@ class MainActivity : AppCompatActivity() {
             return when (position) {
                 0 -> HomeFragment.newInstance()
                 1 -> HotFragment.newInstance()
-                2 -> FuLiFragment.newInstance()
+                2 -> CollectionFragment.newInstance()
                 else -> MeFragment()
             }
         }

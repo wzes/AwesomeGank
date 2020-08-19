@@ -6,9 +6,9 @@
     <item android:id="@+id/rank"
         android:icon="@drawable/ic_tab_bar_rank"
         android:title="@string/home_rankboard"/>
-    <item android:id="@+id/fuli"
-        android:icon="@drawable/ic_tab_bar_fuli"
-        android:title="@string/fuli"/>
+    <item android:id="@+id/collection"
+        android:icon="@drawable/ic_tab_bar_collection"
+        android:title="@string/collection"/>
     <item android:id="@+id/me"
         android:icon="@drawable/ic_tab_bar_man"
         android:title="@string/personal"/>

@@ -83,10 +83,10 @@ class ArticleListAdapter(private val fragment: Fragment,
             binding.data = item
             binding.executePendingBindings()
             binding.root.setOnClickListener {
-                ARouter.getInstance().build("/web/")
+                val postcard = ARouter.getInstance().build("/web/")
                     .withString("web_url", item.url)
                     .withString("title", item.desc)
-                    .navigation()
+                postcard.navigation()
             }
         }
     }

@@ -3,6 +3,7 @@ package com.xuantang.awesomegank.fragments.find
 import android.graphics.Color
 import android.widget.LinearLayout
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.aminography.redirectglide.GlideApp
@@ -17,7 +18,7 @@ import kotlinx.android.synthetic.main.fragment_find.*
 
 class HotFragment : LazyFragment() {
     private val hotModel by lazy(LazyThreadSafetyMode.NONE) {
-        defaultViewModelProviderFactory.create(HotViewModel::class.java)
+        ViewModelProvider(this).get(HotViewModel::class.java)
     }
 
     companion object {
