@@ -62,6 +62,7 @@ object Deps {
 
     val LifecycleExtensions = "androidx.lifecycle:lifecycle-extensions:2.2.0"
 
+    val Constraintlayout = "androidx.constraintlayout:constraintlayout:2.0.1"
 
     val ViewPager2 = "androidx.viewpager2:viewpager2:1.0.0"
 

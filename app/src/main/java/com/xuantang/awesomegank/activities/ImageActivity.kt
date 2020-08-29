@@ -7,15 +7,13 @@ import android.os.Bundle
 import android.transition.Fade
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.aminography.redirectglide.GlideApp
 import com.xuantang.awesomegank.App
 import com.xuantang.awesomegank.R
-import com.xuantang.awesomegank.extentions.setStatusTransAndDarkIcon
+import com.xuantang.basemodule.extentions.setStatusTransAndDarkIcon
 import kotlinx.android.synthetic.main.activity_image.*
-import kotlinx.android.synthetic.main.item_image_adapter.*
 import kotlinx.android.synthetic.main.item_image_adapter.view.*
 
 class ImageActivity : AppCompatActivity() {
@@ -44,6 +42,9 @@ class ImageActivity : AppCompatActivity() {
         setContentView(R.layout.activity_image)
         image_view_pager.adapter = ImagePagerAdapter(imageList)
         image_view_pager.currentItem = position
+
+        window.enterTransition = Fade()
+        window.exitTransition = Fade()
     }
 
     private inner class ImagePagerAdapter(private val imageList: List<String>) :
@@ -63,8 +64,6 @@ class ImageActivity : AppCompatActivity() {
 
         inner class ImageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             fun bind(position: Int) {
-                window.enterTransition = Fade()
-                window.exitTransition = Fade()
                 itemView.pv.transitionName = "Image $position"
                 itemView.pv.setOnClickListener {
                     onBackPressed()

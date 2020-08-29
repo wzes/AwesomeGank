@@ -1,7 +1,7 @@
 package com.xuantang.awesomegank.service.utils
 
 import com.xuantang.awesomegank.AppContext
-import com.xuantang.awesomegank.extentions.ensureDir
+import com.xuantang.basemodule.extentions.ensureDir
 import okhttp3.Cache
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor

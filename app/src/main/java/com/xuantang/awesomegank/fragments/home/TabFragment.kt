@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
@@ -11,14 +12,20 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.wanglu.photoviewerlibrary.MediaModel
+import com.wanglu.photoviewerlibrary.MediaStoreFactory
+import com.wanglu.photoviewerlibrary.PhotoViewer
+import com.wanglu.photoviewerlibrary.PreviewConfig
 import com.xuantang.awesomegank.R
 import com.xuantang.awesomegank.activities.ImageActivity
 import com.xuantang.awesomegank.adapter.ArticleAdapter
-import com.xuantang.awesomegank.extentions.no
-import com.xuantang.awesomegank.extentions.yes
+import com.xuantang.basemodule.extentions.no
+import com.xuantang.basemodule.extentions.yes
 import com.xuantang.awesomegank.viewmodel.ArticleViewModel
 import com.xuantang.awesomegank.viewmodel.RefreshViewModel
 import kotlinx.android.synthetic.main.fragment_tab.*
+import java.util.ArrayList
 
 
 class TabFragment(private val category: String, private val position: Int) : Fragment(),
@@ -58,12 +65,26 @@ class TabFragment(private val category: String, private val position: Int) : Fra
         }
         home_tab_recyclerview.adapter = adapter
 
-        adapter?.setOnImageClick { v, position, imageList ->
-            val intent = ImageActivity.newIntent(activity!!, imageList, position)
-            val options = ViewCompat.getTransitionName(v)?.let {
-                ActivityOptionsCompat.makeSceneTransitionAnimation(activity!!, v, it)
-            }
-            startActivity(intent, options?.toBundle())
+        adapter?.setOnImageClick { v, position, imageList, id ->
+
+
+            val mediaModels = imageList.mapIndexed { index, s ->
+                val view = home_tab_recyclerview.findViewWithTag<View>("$id-$index")
+                MediaModel(
+                    url = s,
+                    height = view.height,
+                    width = view.width,
+                    locationRec = getCurrentViewLocation(view)
+                )
+            } as ArrayList
+            val key = MediaStoreFactory.setPayload(mediaModels)
+
+
+            PhotoViewer
+                .start(this, PreviewConfig(
+                    mediaModelKey = key,
+                    currentPage = position
+                ))
         }
 
         home_tab_recyclerview.layoutManager = LinearLayoutManager(context)
@@ -122,5 +143,16 @@ class TabFragment(private val category: String, private val position: Int) : Fra
                 home_tab_recyclerview.smoothScrollToPosition(0)
             }
         }
+    }
+
+    /**
+     * 获取现在查看到的图片的原始位置 (中间)
+     */
+    private fun getCurrentViewLocation(view: View): IntArray {
+        val result = IntArray(2)
+        view.getLocationInWindow(result)
+        result[0] += view.width / 2
+        result[1] += view.height / 2
+        return result
     }
 }

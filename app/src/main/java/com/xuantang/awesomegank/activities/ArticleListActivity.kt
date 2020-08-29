@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.xuantang.awesomegank.R
-import com.xuantang.awesomegank.extentions.setDarkStatusIcon
+import com.xuantang.basemodule.extentions.setDarkStatusIcon
 import com.xuantang.awesomegank.fragments.list.ArticleListFragment
 
 @Route(path = "/article/list")

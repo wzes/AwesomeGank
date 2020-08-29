@@ -10,7 +10,7 @@ import com.bumptech.glide.Glide
 import com.xuantang.awesomegank.R
 import com.xuantang.awesomegank.database.Collection
 import com.xuantang.awesomegank.databinding.ItemCollectionAdapterBinding
-import com.xuantang.awesomegank.extentions.yes
+import com.xuantang.basemodule.extentions.yes
 
 
 class CollectionAdapter(private val items: MutableList<Collection>, private val context: Context) :

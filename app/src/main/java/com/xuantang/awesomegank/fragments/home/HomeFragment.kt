@@ -27,9 +27,9 @@ import com.xuantang.awesomegank.R
 import com.xuantang.awesomegank.activities.MainActivity
 import com.xuantang.awesomegank.adapter.ImageBannerAdapter
 import com.xuantang.awesomegank.components.HomeNestedScrollView
-import com.xuantang.awesomegank.extentions.dp
-import com.xuantang.awesomegank.extentions.getStatusBarHeight
-import com.xuantang.awesomegank.extentions.no
+import com.xuantang.basemodule.extentions.dp
+import com.xuantang.basemodule.extentions.getStatusBarHeight
+import com.xuantang.basemodule.extentions.no
 import com.xuantang.awesomegank.fragments.LazyFragment
 import com.xuantang.awesomegank.model.KingKong
 import com.xuantang.awesomegank.viewmodel.BannerViewModel
@@ -289,7 +289,7 @@ class HomeFragment : LazyFragment(), MainActivity.OnTabChangeListener {
     }
 
     private fun getKingKongView(): View {
-        val root = LinearLayoutCompat(context).apply {
+        val root = LinearLayoutCompat(context!!).apply {
             orientation = LinearLayoutCompat.HORIZONTAL
         }
         for (kingKong in kingKongs) {

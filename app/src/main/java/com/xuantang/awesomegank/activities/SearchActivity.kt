@@ -14,10 +14,10 @@ import androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_DRAGGING
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.xuantang.awesomegank.R
 import com.xuantang.awesomegank.adapter.ArticleAdapter
-import com.xuantang.awesomegank.extentions.getStatusBarHeight
-import com.xuantang.awesomegank.extentions.hideKeyboard
-import com.xuantang.awesomegank.extentions.setStatusTransAndDarkIcon
-import com.xuantang.awesomegank.extentions.yes
+import com.xuantang.basemodule.extentions.getStatusBarHeight
+import com.xuantang.basemodule.extentions.hideKeyboard
+import com.xuantang.basemodule.extentions.setStatusTransAndDarkIcon
+import com.xuantang.basemodule.extentions.yes
 import com.xuantang.awesomegank.viewmodel.SearchViewModel
 import kotlinx.android.synthetic.main.activity_search.*
 

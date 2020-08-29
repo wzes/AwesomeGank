@@ -1,8 +1,8 @@
 package com.xuantang.awesomegank.utils
 
 
-import com.xuantang.awesomegank.extentions.otherwise
-import com.xuantang.awesomegank.extentions.yes
+import com.xuantang.basemodule.extentions.otherwise
+import com.xuantang.basemodule.extentions.yes
 import java.util.*
 
 fun getYear(): String {

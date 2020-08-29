@@ -1,4 +1,4 @@
-package com.xuantang.awesomegank.extentions
+package com.xuantang.basemodule.extentions
 
 import android.app.Activity
 import android.content.Context
@@ -54,10 +54,9 @@ fun <T : Activity> T.setStatusTransAndDarkIcon(@ColorInt statusColor: Int = Colo
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
         //默认透明色
         window.statusBarColor = statusColor
-    } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+    } else
         // 4.4 - 5.0 实现
         window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-    }
     setDarkStatusIcon(true)
 }
 

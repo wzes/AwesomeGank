@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.xuantang.awesomegank.AppContext
 import com.xuantang.awesomegank.database.CollectionDao
-import com.xuantang.awesomegank.extentions.dispatchDefault
+import com.xuantang.basemodule.extentions.dispatchDefault
 import com.xuantang.awesomegank.lifecycle.RxViewModel
 import io.reactivex.rxkotlin.subscribeBy
 import com.xuantang.awesomegank.database.Collection

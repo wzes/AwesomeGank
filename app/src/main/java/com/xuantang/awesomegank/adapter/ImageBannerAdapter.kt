@@ -9,7 +9,7 @@ import com.alibaba.android.arouter.launcher.ARouter
 import com.aminography.redirectglide.GlideApp
 import com.xuantang.awesomegank.App
 import com.xuantang.awesomegank.components.RoundCornerImageView
-import com.xuantang.awesomegank.extentions.dp
+import com.xuantang.basemodule.extentions.dp
 import com.xuantang.awesomegank.model.Banner
 import com.youth.banner.adapter.BannerAdapter
 

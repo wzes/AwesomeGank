@@ -2,7 +2,7 @@ package com.xuantang.awesomegank.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.xuantang.awesomegank.extentions.dispatchDefault
+import com.xuantang.basemodule.extentions.dispatchDefault
 import com.xuantang.awesomegank.lifecycle.RxViewModel
 import com.xuantang.awesomegank.model.ArticleResponse
 import com.xuantang.awesomegank.service.DataService

@@ -1,4 +1,4 @@
-package com.xuantang.awesomegank.extentions
+package com.xuantang.basemodule.extentions
 
 /**
  * 判断是否是http协议的url

@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.alibaba.android.arouter.launcher.ARouter
 import com.xuantang.awesomegank.R
 import com.xuantang.awesomegank.databinding.ArticleItemViewBinding
-import com.xuantang.awesomegank.extentions.yes
+import com.xuantang.basemodule.extentions.yes
 import com.xuantang.awesomegank.model.NoImageArticleResponse
 
 class ArticleListAdapter(private val fragment: Fragment,

@@ -7,7 +7,7 @@ import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import com.xuantang.awesomegank.extentions.dp
+import com.xuantang.basemodule.extentions.dp
 
 import kotlin.math.ceil
 
@@ -130,7 +130,7 @@ class NineGridImageLayout : ViewGroup {
         }
     }
 
-    fun setData(imageList: List<String>, ratio: Float) {
+    fun setData(imageList: List<String>, ratio: Float, id: String) {
         //最多九张
         this.imageList =
             if (imageList.size > 9)
@@ -145,7 +145,7 @@ class NineGridImageLayout : ViewGroup {
         //不要重复addView以免造成过多的性能损耗
         if (imageList.size == 1) {
             if (getChildAt(0) == null)
-                generateImageView().addViewIn()
+                generateImageView("$id-0").addViewIn()
             getChildAt(0).layoutParams = if (ratio > 1) {
                 val height = (singleImgSize / ratio).toInt()
                 val width = singleImgSize
@@ -158,18 +158,19 @@ class NineGridImageLayout : ViewGroup {
         } else {
             imageList.forEachIndexed { index, _ ->
                 if (getChildAt(index) == null)
-                    generateImageView().addViewIn()
+                    generateImageView("$id-$index").addViewIn()
                 getChildAt(0).layoutParams = LayoutParams(gridSize, gridSize)
             }
         }
     }
 
-    private fun generateImageView() =
+    private fun generateImageView(viewTag: String) =
         RoundCornerImageView(context).apply {
             borderColor = Color.parseColor("#DBDBDB")
             borderWidth = dp(0.4f).toFloat()
             radius = dp(3).toFloat()
             scaleType = ImageView.ScaleType.CENTER_CROP
+            tag = viewTag
         }
 
 

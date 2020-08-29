@@ -7,10 +7,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.xuantang.awesomegank.R
 import com.xuantang.awesomegank.adapter.ImageAdapter
-import com.xuantang.awesomegank.extentions.dp
-import com.xuantang.awesomegank.extentions.getStatusBarHeight
-import com.xuantang.awesomegank.extentions.otherwise
-import com.xuantang.awesomegank.extentions.yes
+import com.xuantang.basemodule.extentions.dp
+import com.xuantang.basemodule.extentions.getStatusBarHeight
+import com.xuantang.basemodule.extentions.otherwise
+import com.xuantang.basemodule.extentions.yes
 import com.xuantang.awesomegank.fragments.LazyFragment
 import com.xuantang.awesomegank.viewmodel.FuliViewModel
 import kotlinx.android.synthetic.main.fragment_fuli.*

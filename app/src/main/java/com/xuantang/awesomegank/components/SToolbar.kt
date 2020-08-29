@@ -17,10 +17,10 @@ import androidx.annotation.ColorInt
 import androidx.appcompat.widget.AppCompatImageButton
 import androidx.appcompat.widget.AppCompatTextView
 import com.xuantang.awesomegank.R
-import com.xuantang.awesomegank.extentions.dp
-import com.xuantang.awesomegank.extentions.invoke
-import com.xuantang.awesomegank.extentions.sp
-import com.xuantang.awesomegank.extentions.yes
+import com.xuantang.basemodule.extentions.dp
+import com.xuantang.basemodule.extentions.invoke
+import com.xuantang.basemodule.extentions.sp
+import com.xuantang.basemodule.extentions.yes
 
 
 /**

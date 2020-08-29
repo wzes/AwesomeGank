@@ -19,15 +19,14 @@ import com.bumptech.glide.request.RequestOptions
 import com.xuantang.awesomegank.R
 import com.xuantang.awesomegank.components.NineGridImageLayout
 import com.xuantang.awesomegank.databinding.HomeItemArticleAdapterBinding
-import com.xuantang.awesomegank.extentions.yes
-import com.xuantang.awesomegank.fragments.home.TabFragment
+import com.xuantang.basemodule.extentions.yes
 import com.xuantang.awesomegank.model.ArticleResponse
 
 class ArticleAdapter(private val context: Context,
                      private var data: List<ArticleResponse.ArticleModel>?,
                      private var hasMore: Boolean,
                      private var loadMore: () -> Unit) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    private var imageClickListener: ((v: View, position: Int, imageList: List<String>) -> Unit)? = null
+    private var imageClickListener: ((v: View, position: Int, imageList: List<String>, id: String) -> Unit)? = null
 
     fun setHasMore(hasMore: Boolean) {
         this.hasMore = hasMore
@@ -86,7 +85,7 @@ class ArticleAdapter(private val context: Context,
         }
     }
 
-    fun setOnImageClick(click: (v: View, position: Int, imageList: List<String>) -> Unit) {
+    fun setOnImageClick(click: (v: View, position: Int, imageList: List<String>, id: String) -> Unit) {
         imageClickListener = click
     }
 
@@ -111,9 +110,9 @@ class ArticleAdapter(private val context: Context,
 
         private fun bindAfterExecute(binding: HomeItemArticleAdapterBinding, item: ArticleResponse.ArticleModel) {
             binding.layoutNineGrid.run {
-                setImageList(item.images, 1f)
+                setImageList(item.images, 1f, item._id)
                 onItemClick { v, position ->
-                    imageClickListener?.invoke(v, position, item.images)
+                    imageClickListener?.invoke(v, position, item.images, item._id)
                 }
                 loadImages { view, url ->
                     Glide.with(context)
@@ -127,9 +126,9 @@ class ArticleAdapter(private val context: Context,
             }
         }
 
-        private fun NineGridImageLayout.setImageList(imageList: List<String>?, ratio: Float) {
+        private fun NineGridImageLayout.setImageList(imageList: List<String>?, ratio: Float, id: String) {
             imageList?.isNotEmpty()?.let {
-                this.setData(imageList, ratio)
+                this.setData(imageList, ratio, id)
             }
         }
 

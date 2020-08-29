@@ -1,4 +1,6 @@
-package com.xuantang.awesomegank.extentions
+@file:Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
+
+package com.xuantang.basemodule.extentions
 
 import android.util.Log
 import java.io.File

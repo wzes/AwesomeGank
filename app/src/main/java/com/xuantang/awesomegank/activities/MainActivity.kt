@@ -8,7 +8,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.fragment.app.FragmentStatePagerAdapter
 import com.xuantang.awesomegank.R
-import com.xuantang.awesomegank.extentions.setStatusTransAndDarkIcon
+import com.xuantang.basemodule.extentions.setStatusTransAndDarkIcon
 import com.xuantang.awesomegank.fragments.collection.CollectionFragment
 import com.xuantang.awesomegank.fragments.find.HotFragment
 import com.xuantang.awesomegank.fragments.home.HomeFragment

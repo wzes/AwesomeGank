@@ -1,4 +1,4 @@
-package com.xuantang.awesomegank.extentions
+package com.xuantang.basemodule.extentions
 
 import io.reactivex.Completable
 import io.reactivex.Flowable

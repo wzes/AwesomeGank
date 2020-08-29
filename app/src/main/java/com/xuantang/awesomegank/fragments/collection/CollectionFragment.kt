@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.appbar.AppBarLayout
 import com.xuantang.awesomegank.R
 import com.xuantang.awesomegank.adapter.CollectionAdapter
-import com.xuantang.awesomegank.extentions.getStatusBarHeight
+import com.xuantang.basemodule.extentions.getStatusBarHeight
 import com.xuantang.awesomegank.fragments.LazyFragment
 import com.xuantang.awesomegank.viewmodel.CollectionViewModel
 import kotlinx.android.synthetic.main.fragment_collection.*

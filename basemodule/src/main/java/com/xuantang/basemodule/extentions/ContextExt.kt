@@ -1,4 +1,4 @@
-package com.xuantang.awesomegank.extentions
+package com.xuantang.basemodule.extentions
 
 import android.content.ClipData
 import android.content.ClipboardManager

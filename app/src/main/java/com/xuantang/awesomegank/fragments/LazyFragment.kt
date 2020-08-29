@@ -6,8 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
-import com.xuantang.awesomegank.extentions.no
-import com.xuantang.awesomegank.extentions.yes
+import com.xuantang.basemodule.extentions.no
+import com.xuantang.basemodule.extentions.yes
 
 abstract class LazyFragment : Fragment() {
     private var isInit = false

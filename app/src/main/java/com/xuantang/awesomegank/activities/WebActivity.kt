@@ -16,7 +16,7 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.xuantang.awesomegank.R
 import com.xuantang.awesomegank.database.CollectionDataBase
-import com.xuantang.awesomegank.extentions.*
+import com.xuantang.basemodule.extentions.*
 import io.reactivex.Completable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
