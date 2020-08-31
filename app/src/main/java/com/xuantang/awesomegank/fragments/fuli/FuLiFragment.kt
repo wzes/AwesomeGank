@@ -11,7 +11,7 @@ import com.xuantang.basemodule.extentions.dp
 import com.xuantang.basemodule.extentions.getStatusBarHeight
 import com.xuantang.basemodule.extentions.otherwise
 import com.xuantang.basemodule.extentions.yes
-import com.xuantang.awesomegank.fragments.LazyFragment
+import com.xuantang.basemodule.fragments.LazyFragment
 import com.xuantang.awesomegank.viewmodel.FuliViewModel
 import kotlinx.android.synthetic.main.fragment_fuli.*
 

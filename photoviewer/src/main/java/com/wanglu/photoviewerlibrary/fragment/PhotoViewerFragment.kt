@@ -1,18 +1,17 @@
-package com.wanglu.photoviewerlibrary
+package com.wanglu.photoviewerlibrary.fragment
 
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
-import android.os.Bundle
 import android.view.KeyEvent
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import com.bumptech.glide.Glide
+import com.wanglu.photoviewerlibrary.activity.OnLongClickListener
+import com.wanglu.photoviewerlibrary.PhotoViewer
+import com.wanglu.photoviewerlibrary.R
+import com.xuantang.basemodule.fragments.LazyFragment
 import kotlinx.android.synthetic.main.item_picture.*
 
-class PhotoViewerFragment : BaseLazyFragment() {
-
-
+class PhotoViewerFragment : LazyFragment() {
     var exitListener: OnExitListener? = null
     var longClickListener: OnLongClickListener? = null
 
@@ -30,18 +29,18 @@ class PhotoViewerFragment : BaseLazyFragment() {
         mPicData = picData
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-
-        return inflater.inflate(R.layout.item_picture, container, false)
-    }
-
     interface OnExitListener {
         fun exit()
     }
 
+    override fun getLayoutId(): Int {
+        return R.layout.item_picture
+    }
 
+    override fun getData() {
+    }
 
-    override fun onLazyLoad() {
+    override fun initView() {
         if (PhotoViewer.mInterface != null) {
             PhotoViewer.mInterface!!.show(mIv, mPicData)
         } else {
@@ -123,19 +122,11 @@ class PhotoViewerFragment : BaseLazyFragment() {
             if (intAlpha < 0) intAlpha = 0
             else if (intAlpha > 255) intAlpha = 255
             root.background.alpha = intAlpha    // 更改透明度
-
             if (alpha >= 0.6)
                 mIv.attacher.scale = alpha   // 更改大小
-
-
         }
-
-
         mIv.setOnClickListener {
-
             mIv.exit()
         }
-
     }
-
 }

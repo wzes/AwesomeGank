@@ -1,15 +1,18 @@
-package com.wanglu.photoviewerlibrary
+package com.wanglu.photoviewerlibrary.base
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import android.view.MotionEvent
+import androidx.viewpager.widget.ViewPager
 
-class ViewPagerFixed : androidx.viewpager.widget.ViewPager {
+class ViewPagerFixed : ViewPager {
 
     constructor(context: Context) : super(context)
 
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(ev: MotionEvent): Boolean {
         try {
             return super.onTouchEvent(ev)
@@ -26,7 +29,6 @@ class ViewPagerFixed : androidx.viewpager.widget.ViewPager {
         } catch (ex: IllegalArgumentException) {
             ex.printStackTrace()
         }
-
         return false
     }
 }

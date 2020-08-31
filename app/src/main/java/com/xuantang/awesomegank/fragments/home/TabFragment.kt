@@ -4,21 +4,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import androidx.core.app.ActivityOptionsCompat
-import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.wanglu.photoviewerlibrary.MediaModel
-import com.wanglu.photoviewerlibrary.MediaStoreFactory
+import com.wanglu.photoviewerlibrary.media.MediaModel
+import com.wanglu.photoviewerlibrary.media.MediaStoreFactory
 import com.wanglu.photoviewerlibrary.PhotoViewer
-import com.wanglu.photoviewerlibrary.PreviewConfig
+import com.wanglu.photoviewerlibrary.media.PreviewConfig
 import com.xuantang.awesomegank.R
-import com.xuantang.awesomegank.activities.ImageActivity
 import com.xuantang.awesomegank.adapter.ArticleAdapter
 import com.xuantang.basemodule.extentions.no
 import com.xuantang.basemodule.extentions.yes
@@ -84,7 +79,8 @@ class TabFragment(private val category: String, private val position: Int) : Fra
                 .start(this, PreviewConfig(
                     mediaModelKey = key,
                     currentPage = position
-                ))
+                )
+                )
         }
 
         home_tab_recyclerview.layoutManager = LinearLayoutManager(context)

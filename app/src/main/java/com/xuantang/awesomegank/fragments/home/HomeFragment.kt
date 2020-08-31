@@ -30,7 +30,7 @@ import com.xuantang.awesomegank.components.HomeNestedScrollView
 import com.xuantang.basemodule.extentions.dp
 import com.xuantang.basemodule.extentions.getStatusBarHeight
 import com.xuantang.basemodule.extentions.no
-import com.xuantang.awesomegank.fragments.LazyFragment
+import com.xuantang.basemodule.fragments.LazyFragment
 import com.xuantang.awesomegank.model.KingKong
 import com.xuantang.awesomegank.viewmodel.BannerViewModel
 import com.xuantang.awesomegank.viewmodel.RefreshViewModel

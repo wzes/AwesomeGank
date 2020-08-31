@@ -1,4 +1,4 @@
-package com.wanglu.photoviewerlibrary
+package com.wanglu.photoviewerlibrary.media
 
 data class MediaModel(
     val url: String,

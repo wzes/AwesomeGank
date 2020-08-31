@@ -43,6 +43,11 @@ android {
 dependencies {
     implementation(fileTree(mapOf("include" to listOf("*.jar"), "dir" to "libs")))
     implementation(project(":basemodule"))
+
+    // cannot delete
+    api(Deps.Arouter.api)
+    kapt (Deps.Arouter.compiler)
+
     testImplementation(Deps.Test.junit)
     androidTestImplementation(Deps.Test.runner)
     androidTestImplementation(Deps.Test.espresso)

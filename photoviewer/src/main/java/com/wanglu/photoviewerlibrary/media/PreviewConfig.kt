@@ -1,4 +1,4 @@
-package com.wanglu.photoviewerlibrary
+package com.wanglu.photoviewerlibrary.media
 
 import android.os.Parcel
 import android.os.Parcelable

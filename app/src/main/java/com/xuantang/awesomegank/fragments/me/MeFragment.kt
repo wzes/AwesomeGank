@@ -1,7 +1,7 @@
 package com.xuantang.awesomegank.fragments.me
 
 import com.xuantang.awesomegank.R
-import com.xuantang.awesomegank.fragments.LazyFragment
+import com.xuantang.basemodule.fragments.LazyFragment
 
 class MeFragment : LazyFragment() {
     override fun getData() {

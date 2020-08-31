@@ -6,13 +6,12 @@ import android.net.Uri
 import android.view.View
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
+import com.wanglu.photoviewerlibrary.activity.OnLongClickListener
+import com.wanglu.photoviewerlibrary.media.PreviewConfig
 import java.lang.ref.WeakReference
 
 
 @SuppressLint("StaticFieldLeak")
-/**
- * Created by WangLu on 2018/7/15.
- */
 object PhotoViewer {
     const val MEDIA_KEY = "media_key"
     const val PREVIEW_CONFIG = "preview_config"
@@ -27,7 +26,6 @@ object PhotoViewer {
 
     private var clickView: WeakReference<View>? = null //点击那一张图片时候的view
     private var longClickListener: OnLongClickListener? = null
-
     private var indicatorType = INDICATOR_TYPE_DOT   // 默认type为小圆点
 
     private var mActivity: AppCompatActivity? = null
@@ -46,25 +44,11 @@ object PhotoViewer {
         fun show(iv: ImageView, url: String)
     }
 
-    /**
-     * 设置显示ImageView的接口
-     */
-    fun setShowImageViewInterface(i: ShowImageViewInterface): PhotoViewer {
-        mInterface = i
-        return this
-    }
 
     fun start(fragment: androidx.fragment.app.Fragment, previewConfig: PreviewConfig) {
         val activity = fragment.activity!!
         start(activity as AppCompatActivity, previewConfig)
     }
-
-
-    fun start(fragment: android.app.Fragment, previewConfig: PreviewConfig) {
-        val activity = fragment.activity!!
-        start(activity as AppCompatActivity, previewConfig)
-    }
-
 
     fun start(activity: AppCompatActivity, previewConfig: PreviewConfig) {
         // start intent

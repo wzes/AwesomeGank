@@ -2,6 +2,8 @@ package com.xuantang.awesomegank.adapter
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -95,7 +97,8 @@ class ArticleAdapter(private val context: Context,
             binding.common = item
             binding.executePendingBindings()
             binding.root.setOnClickListener {
-                ARouter.getInstance().build("/web/")
+                ARouter.getInstance()
+                    .build("/web/")
                     .withString("web_url", "https://gank.io/post/${item._id}")
                     .withString("title", item.desc)
                     .withString("cover_url", if (item.images.isNotEmpty()) {

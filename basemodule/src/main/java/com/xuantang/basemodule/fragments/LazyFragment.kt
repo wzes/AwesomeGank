@@ -1,4 +1,4 @@
-package com.xuantang.awesomegank.fragments
+package com.xuantang.basemodule.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater

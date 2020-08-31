@@ -1,4 +1,4 @@
-package com.wanglu.photoviewerlibrary
+package com.wanglu.photoviewerlibrary.activity
 
 import android.view.View
 

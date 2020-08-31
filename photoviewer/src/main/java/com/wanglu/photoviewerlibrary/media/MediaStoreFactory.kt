@@ -1,4 +1,4 @@
-package com.wanglu.photoviewerlibrary
+package com.wanglu.photoviewerlibrary.media
 
 import java.util.*
 import kotlin.collections.HashMap

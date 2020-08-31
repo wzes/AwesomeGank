@@ -4,7 +4,7 @@
 
     <application>
         <activity
-            android:name=".PreviewActivity"
+            android:name=".activity.PreviewActivity"
             android:theme="@style/AppTransparentTheme">
             <intent-filter>
                 <data android:scheme="xuantang"

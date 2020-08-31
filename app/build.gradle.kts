@@ -32,7 +32,6 @@ android {
     }
 
     buildFeatures.dataBinding = true
-
     kapt {
         arguments {
             arg("AROUTER_MODULE_NAME", project.name)
@@ -44,6 +43,10 @@ dependencies {
     implementation(fileTree(mapOf("include" to listOf("*.jar"), "dir" to "libs")))
     implementation(project(":basemodule"))
     implementation(project(":photoviewer"))
+
+    // cannot delete
+    api(Deps.Arouter.api)
+    kapt (Deps.Arouter.compiler)
 
     testImplementation(Deps.Test.junit)
     androidTestImplementation(Deps.Test.runner)

@@ -4,7 +4,7 @@ import androidx.lifecycle.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.xuantang.awesomegank.R
 import com.xuantang.awesomegank.adapter.ArticleListAdapter
-import com.xuantang.awesomegank.fragments.LazyFragment
+import com.xuantang.basemodule.fragments.LazyFragment
 import com.xuantang.awesomegank.viewmodel.NoImageArticleViewModel
 import kotlinx.android.synthetic.main.fragment_article_list.*
 
