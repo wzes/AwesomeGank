@@ -32,7 +32,18 @@
                     android:elevation="5dp"
                     android:textColor="#000000"
                     tools:text="五月光环节"
-                    tools:ignore="RtlSymmetry" />
+                    tools:ignore="RtlSymmetry"/>
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/go_top"
+                    android:visibility="invisible"
+                    android:id="@+id/home_go_top"
+                    android:layout_gravity="right"
+                    android:drawablePadding="-10dp"
+                    android:layout_marginEnd="10dp"
+                    android:drawableTop="@drawable/ic_baseline_arrow_drop_up_24"
+                    tools:ignore="RtlHardcoded" />
             </FrameLayout>
             <com.xuantang.awesomegank.components.HomeNestedScrollView
                 android:layout_width="match_parent"

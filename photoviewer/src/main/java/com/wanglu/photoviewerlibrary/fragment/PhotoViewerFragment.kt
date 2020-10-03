@@ -6,8 +6,8 @@ import android.view.KeyEvent
 import android.view.View
 import com.bumptech.glide.Glide
 import com.wanglu.photoviewerlibrary.activity.OnLongClickListener
-import com.wanglu.photoviewerlibrary.PhotoViewer
 import com.wanglu.photoviewerlibrary.R
+import com.xuantang.basemodule.extentions.yes
 import com.xuantang.basemodule.fragments.LazyFragment
 import kotlinx.android.synthetic.main.item_picture.*
 
@@ -19,9 +19,7 @@ class PhotoViewerFragment : LazyFragment() {
     private var mExitLocation = IntArray(2)
     private var mInAnim = true
     private var mPicData = ""
-    /**
-     * 每次选中图片后设置图片信息
-     */
+
     fun setData(imgSize: IntArray, exitLocation: IntArray, picData: String, inAnim: Boolean) {
         mImgSize = imgSize
         mExitLocation = exitLocation
@@ -41,92 +39,66 @@ class PhotoViewerFragment : LazyFragment() {
     }
 
     override fun initView() {
-        if (PhotoViewer.mInterface != null) {
-            PhotoViewer.mInterface!!.show(mIv, mPicData)
-        } else {
-            Glide.with(mIv.context).load(mPicData).into(mIv)
-        }
-
-        var alpha = 1f  // 透明度
-        mIv.setExitLocation(mExitLocation)
-        mIv.setImgSize(mImgSize)
-        mIv.setOnLongClickListener {
+        Glide.with(photo_view.context).load(mPicData).into(photo_view)
+        photo_view.visibility = View.INVISIBLE
+        var alpha = 1f
+        photo_view.setExitLocation(mExitLocation)
+        photo_view.setImgSize(mImgSize)
+        photo_view.setOnLongClickListener {
             if (longClickListener != null) {
                 longClickListener!!.onLongClick(it)
             }
             true
         }
-
-        // 循环查看是否添加上了图片
-        Thread(Runnable {
-            while (true) {
-                if (mIv.drawable != null) {
-                    activity!!.runOnUiThread {
-                        loading.visibility = View.GONE
-                    }
-                    break
-                }
-                Thread.sleep(300)
-            }
-        }).start()
-
         var intAlpha = 255
-        root.background.alpha = intAlpha
-        mIv.rootView = root
-        mIv.setOnViewFingerUpListener {
+        photo_container.background.alpha = intAlpha
+        photo_view.rootView = photo_container
+
+        photo_view.setOnViewFingerUpListener {
             alpha = 1f
             intAlpha = 255
         }
-
-        // 注册退出Activity 滑动大于一定距离后退出
-        mIv.setExitListener {
+        photo_view.setExitListener {
             if (exitListener != null) {
                 exitListener!!.exit()
             }
         }
-
-        // 添加点击进入时的动画
-        if (mInAnim)
-            mIv.post {
-
-                val scaleOa = ObjectAnimator.ofFloat(mIv, "scale", mImgSize[0].toFloat() / mIv.width, 1f)
-                val xOa = ObjectAnimator.ofFloat(mIv, "translationX", mExitLocation[0].toFloat() - mIv.width / 2, 0f)
-                val yOa = ObjectAnimator.ofFloat(mIv, "translationY", mExitLocation[1].toFloat() - mIv.height / 2, 0f)
-
+        mInAnim.yes {
+            photo_view.post {
+                photo_view.visibility = View.VISIBLE
+                val scaleOx = ObjectAnimator.ofFloat(photo_view, "scale", mImgSize[0].toFloat() / photo_view.width, 1f)
+                val xOa = ObjectAnimator.ofFloat(photo_view, "translationX", mExitLocation[0].toFloat() - photo_view.width / 2, 0f)
+                val yOa = ObjectAnimator.ofFloat(photo_view, "translationY", mExitLocation[1].toFloat() - photo_view.height / 2, 0f)
                 val set = AnimatorSet()
                 set.duration = 250
-                set.playTogether(scaleOa, xOa, yOa)
+                set.playTogether(scaleOx, xOa, yOa)
                 set.start()
             }
-
-
-        root.isFocusableInTouchMode = true
-        root.requestFocus()
-        root.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+        }
+        photo_container.isFocusableInTouchMode = true
+        photo_container.requestFocus()
+        photo_container.setOnKeyListener(View.OnKeyListener { _, keyCode, _ ->
             if (keyCode == KeyEvent.KEYCODE_BACK) {
-
-                mIv.exit()
-
+                photo_view.exit()
                 return@OnKeyListener true
             }
             false
         })
 
-        mIv.setOnViewDragListener { dx, dy ->
-
-            mIv.scrollBy((-dx).toInt(), (-dy).toInt())  // 移动图像
+        photo_view.setOnViewDragListener { dx, dy ->
+            photo_view.scrollBy((-dx).toInt(), (-dy).toInt())  // 移动图像
             alpha -= dy * 0.001f
             intAlpha -= (dy * 0.5).toInt()
             if (alpha > 1) alpha = 1f
             else if (alpha < 0) alpha = 0f
             if (intAlpha < 0) intAlpha = 0
             else if (intAlpha > 255) intAlpha = 255
-            root.background.alpha = intAlpha    // 更改透明度
+            photo_container.background.alpha = intAlpha    // 更改透明度
             if (alpha >= 0.6)
-                mIv.attacher.scale = alpha   // 更改大小
+                photo_view.attacher.scale = alpha   // 更改大小
         }
-        mIv.setOnClickListener {
-            mIv.exit()
+        photo_view.setOnClickListener {
+            photo_view.exit()
         }
     }
 }

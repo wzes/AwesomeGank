@@ -97,7 +97,6 @@ class NineGridImageLayout : ViewGroup {
                     view.setOnClickListener {
                         itemClickListener?.invoke(it, index)
                     }
-                    view.transitionName = "Image $index"
                 }
             }
         }
@@ -146,6 +145,9 @@ class NineGridImageLayout : ViewGroup {
         if (imageList.size == 1) {
             if (getChildAt(0) == null)
                 generateImageView("$id-0").addViewIn()
+            getChildAt(0).apply {
+                tag = "$id-0"
+            }
             getChildAt(0).layoutParams = if (ratio > 1) {
                 val height = (singleImgSize / ratio).toInt()
                 val width = singleImgSize
@@ -159,6 +161,9 @@ class NineGridImageLayout : ViewGroup {
             imageList.forEachIndexed { index, _ ->
                 if (getChildAt(index) == null)
                     generateImageView("$id-$index").addViewIn()
+                getChildAt(index).apply {
+                    tag = "$id-$index"
+                }
                 getChildAt(0).layoutParams = LayoutParams(gridSize, gridSize)
             }
         }

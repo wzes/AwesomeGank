@@ -19,6 +19,7 @@ import com.xuantang.basemodule.extentions.no
 import com.xuantang.basemodule.extentions.yes
 import com.xuantang.awesomegank.viewmodel.ArticleViewModel
 import com.xuantang.awesomegank.viewmodel.RefreshViewModel
+import com.xuantang.basemodule.extentions.toast
 import kotlinx.android.synthetic.main.fragment_tab.*
 import java.util.ArrayList
 
@@ -60,27 +61,33 @@ class TabFragment(private val category: String, private val position: Int) : Fra
         }
         home_tab_recyclerview.adapter = adapter
 
-        adapter?.setOnImageClick { v, position, imageList, id ->
-
-
+        adapter?.setOnImageClick { _, position, imageList, id, itemPosition ->
             val mediaModels = imageList.mapIndexed { index, s ->
-                val view = home_tab_recyclerview.findViewWithTag<View>("$id-$index")
-                MediaModel(
-                    url = s,
-                    height = view.height,
-                    width = view.width,
-                    locationRec = getCurrentViewLocation(view)
-                )
+                val viewGroup = home_tab_recyclerview.layoutManager?.findViewByPosition(itemPosition)
+                val view = viewGroup?.findViewWithTag<View>("$id-$index")
+                if (view == null) {
+                    toast("cannot find: $id-$index")
+                    MediaModel(
+                        url = s,
+                        height = 0,
+                        width = 0,
+                        locationRec = IntArray(2)
+                    )
+                } else {
+                    MediaModel(
+                        url = s,
+                        height = view.height,
+                        width = view.width,
+                        locationRec = getCurrentViewLocation(view)
+                    )
+                }
             } as ArrayList
             val key = MediaStoreFactory.setPayload(mediaModels)
 
-
-            PhotoViewer
-                .start(this, PreviewConfig(
-                    mediaModelKey = key,
-                    currentPage = position
-                )
-                )
+            PhotoViewer.start(this, PreviewConfig(
+                mediaModelKey = key,
+                currentPage = position
+            ))
         }
 
         home_tab_recyclerview.layoutManager = LinearLayoutManager(context)

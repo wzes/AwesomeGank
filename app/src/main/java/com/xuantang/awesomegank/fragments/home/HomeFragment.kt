@@ -19,7 +19,6 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.RecyclerView
 import com.alibaba.android.arouter.launcher.ARouter
 import com.aminography.redirectglide.GlideApp
@@ -34,6 +33,7 @@ import com.xuantang.basemodule.fragments.LazyFragment
 import com.xuantang.awesomegank.model.KingKong
 import com.xuantang.awesomegank.viewmodel.BannerViewModel
 import com.xuantang.awesomegank.viewmodel.RefreshViewModel
+import com.xuantang.basemodule.extentions.yes
 import com.youth.banner.indicator.CircleIndicator
 import kotlinx.android.synthetic.main.fragment_home.*
 
@@ -134,15 +134,40 @@ class HomeFragment : LazyFragment(), MainActivity.OnTabChangeListener {
 
     @SuppressLint("ClickableViewAccessibility")
     override fun initView() {
-        val lp = search_btn.layoutParams as ViewGroup.MarginLayoutParams
-        lp.topMargin = context?.dp(5)?.plus((this.contentTopPadding.value ?: 0)) ?: 10
+        val searchLp = search_btn.layoutParams as ViewGroup.MarginLayoutParams
+        searchLp.topMargin = context?.dp(5)?.plus((this.contentTopPadding.value ?: 0)) ?: 10
+        val homeGoTopLp = home_go_top.layoutParams as ViewGroup.MarginLayoutParams
+        homeGoTopLp.topMargin = context?.dp(5)?.plus((this.contentTopPadding.value ?: 0)) ?: 10
+
         search_btn.setOnClickListener {
             ARouter.getInstance().build("/search/")
                 .navigation()
         }
         search_btn.text = "五月狂欢节🎉"
 
-        val stickyMarginTop: Int = home_viewpager.dp(40 + 10) + lp.topMargin
+        // 回顶部
+        addStickyListener(object : OnStickyListener {
+            override fun onChanged(sticky: Boolean) {
+                val lp = search_btn.layoutParams as ViewGroup.MarginLayoutParams
+                lp.topMargin = context?.dp(5)?.plus((contentTopPadding.value ?: 0)) ?: 10
+                sticky.yes {
+                    lp.rightMargin = search_btn.dp(60)
+                    home_go_top.visibility = View.VISIBLE
+                }
+                sticky.no {
+                    lp.rightMargin = search_btn.dp(15)
+                    home_go_top.visibility = View.INVISIBLE
+                }
+                search_btn.layoutParams = lp
+            }
+        })
+
+        home_go_top.setOnClickListener {
+            getCurrentRecyclerView()?.scrollToPosition(0)
+            home_scrollview.scrollTo(0, 0)
+        }
+
+        val stickyMarginTop: Int = home_viewpager.dp(40 + 10) + searchLp.topMargin
 
         home_title_bar.apply {
             layoutParams.height = stickyMarginTop
@@ -212,7 +237,7 @@ class HomeFragment : LazyFragment(), MainActivity.OnTabChangeListener {
                 // 背景
 
                 // 吸顶
-                val tmp = scrollY >= stickyMarginTop
+                val tmp = scrollY >= home_tab_layout.y.toInt()
                 if (tmp == sticky) {
                     return@setOnScrollChangeListener
                 }

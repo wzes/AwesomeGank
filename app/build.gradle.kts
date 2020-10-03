@@ -46,7 +46,12 @@ dependencies {
 
     // cannot delete
     api(Deps.Arouter.api)
-    kapt (Deps.Arouter.compiler)
+    kapt(Deps.Arouter.compiler)
+
+    kapt(Deps.Room.compiler)
+    api(Deps.Room.runtime)
+    api(Deps.Room.ktx)
+    api(Deps.Room.rxjava2)
 
     testImplementation(Deps.Test.junit)
     androidTestImplementation(Deps.Test.runner)

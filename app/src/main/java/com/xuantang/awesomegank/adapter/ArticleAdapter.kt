@@ -2,8 +2,6 @@ package com.xuantang.awesomegank.adapter
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Intent
-import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,19 +14,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.alibaba.android.arouter.launcher.ARouter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
 import com.xuantang.awesomegank.R
 import com.xuantang.awesomegank.components.NineGridImageLayout
 import com.xuantang.awesomegank.databinding.HomeItemArticleAdapterBinding
-import com.xuantang.basemodule.extentions.yes
 import com.xuantang.awesomegank.model.ArticleResponse
+import com.xuantang.basemodule.extentions.yes
 
 class ArticleAdapter(private val context: Context,
                      private var data: List<ArticleResponse.ArticleModel>?,
                      private var hasMore: Boolean,
                      private var loadMore: () -> Unit) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    private var imageClickListener: ((v: View, position: Int, imageList: List<String>, id: String) -> Unit)? = null
+    private var imageClickListener: ((v: View, position: Int, imageList: List<String>, id: String, itemPosition: Int) -> Unit)? = null
 
     fun setHasMore(hasMore: Boolean) {
         this.hasMore = hasMore
@@ -76,7 +73,7 @@ class ArticleAdapter(private val context: Context,
         if (getItemViewType(position) == 1) {
             data?.get(position).let {
                 if (it != null) {
-                    (holder as ArticleViewHolder).bind(it)
+                    (holder as ArticleViewHolder).bind(it, position)
                 }
             }
         } else if (getItemViewType(position) == 2) {
@@ -87,13 +84,13 @@ class ArticleAdapter(private val context: Context,
         }
     }
 
-    fun setOnImageClick(click: (v: View, position: Int, imageList: List<String>, id: String) -> Unit) {
+    fun setOnImageClick(click: (v: View, position: Int, imageList: List<String>, id: String, itemPosition: Int) -> Unit) {
         imageClickListener = click
     }
 
     internal inner class ArticleViewHolder(private val binding: HomeItemArticleAdapterBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: ArticleResponse.ArticleModel) {
+        fun bind(item: ArticleResponse.ArticleModel, position: Int) {
             binding.common = item
             binding.executePendingBindings()
             binding.root.setOnClickListener {
@@ -108,23 +105,25 @@ class ArticleAdapter(private val context: Context,
                     })
                     .navigation()
             }
-            bindAfterExecute(binding, item)
+            if (position == 0) {
+                bindAfterExecute(binding, item, position)
+            }
+            bindAfterExecute(binding, item, position)
         }
 
-        private fun bindAfterExecute(binding: HomeItemArticleAdapterBinding, item: ArticleResponse.ArticleModel) {
+        private fun bindAfterExecute(binding: HomeItemArticleAdapterBinding, item: ArticleResponse.ArticleModel, itemPosition: Int) {
             binding.layoutNineGrid.run {
                 setImageList(item.images, 1f, item._id)
                 onItemClick { v, position ->
-                    imageClickListener?.invoke(v, position, item.images, item._id)
+                    imageClickListener?.invoke(v, position, item.images, item._id, itemPosition)
                 }
                 loadImages { view, url ->
                     Glide.with(context)
                         .load(url)
-                        .transition(DrawableTransitionOptions.withCrossFade())
-                        .apply(
-                            RequestOptions().placeholder(R.color.divider).diskCacheStrategy(
-                                DiskCacheStrategy.AUTOMATIC))
+                        .apply(RequestOptions().placeholder(R.color.divider)
+                        .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC))
                         .into(view)
+
                 }
             }
         }

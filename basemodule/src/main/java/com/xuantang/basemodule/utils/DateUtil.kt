@@ -1,4 +1,4 @@
-package com.xuantang.awesomegank.utils
+package com.xuantang.basemodule.utils
 
 
 import com.xuantang.basemodule.extentions.otherwise

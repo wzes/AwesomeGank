@@ -10,6 +10,8 @@ import android.util.AttributeSet
 import android.widget.ImageView
 import androidx.appcompat.widget.AppCompatImageView
 import com.bumptech.glide.load.resource.gif.GifDrawable
+import kotlin.math.max
+import kotlin.math.roundToInt
 
 
 class RoundCornerImageView : AppCompatImageView {
@@ -93,7 +95,7 @@ class RoundCornerImageView : AppCompatImageView {
     }
 
     private fun Float.round(): Int {
-        return Math.round(this)
+        return this.roundToInt()
     }
 
     private fun Drawable.toBitmap(): Bitmap {
@@ -130,7 +132,7 @@ class RoundCornerImageView : AppCompatImageView {
         var dx = 0f
         var dy = 0f
         val fits = (drawableWidth < 0 || viewWidth == drawableWidth) && (drawableHeight < 0 || viewHeight == drawableHeight)
-        val scale = Math.max(viewWidth / drawableWidth.toFloat(), viewHeight / drawableHeight.toFloat())
+        val scale = max(viewWidth / drawableWidth.toFloat(), viewHeight / drawableHeight.toFloat())
         if (drawableWidth <= 0 || drawableHeight <= 0) {
             drawable.setBounds(0, 0, viewWidth, viewHeight)
             _matrix = null

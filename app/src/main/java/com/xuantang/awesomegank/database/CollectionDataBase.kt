@@ -12,7 +12,7 @@ abstract class CollectionDataBase : RoomDatabase() {
     abstract fun collectionDao(): CollectionDao
 
     companion object {
-        private const val DB_NAME = "geekNews.db"
+        private const val DB_NAME = "aswsomegank.db"
 
         @Volatile
         private var INSTANCE: CollectionDataBase? = null

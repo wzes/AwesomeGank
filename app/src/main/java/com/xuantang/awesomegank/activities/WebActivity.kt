@@ -23,7 +23,7 @@ import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.activity_web.*
 import kotlinx.android.synthetic.main.dialog_web.view.*
 import com.xuantang.awesomegank.database.Collection
-import com.xuantang.awesomegank.utils.*
+import com.xuantang.basemodule.utils.*
 import io.reactivex.rxkotlin.subscribeBy
 
 @Route(path = "/web/")
