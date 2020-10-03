@@ -28,6 +28,19 @@
         <item name="android:letterSpacing" tools:targetApi="lollipop">0.02</item>
     </style>
 
+    <style name="item_me" parent="AppTheme">
+        <item name="android:textColor">@color/textPrimary</item>
+        <item name="android:textSize">17sp</item>
+        <item name="android:letterSpacing" tools:targetApi="lollipop">0.04</item>
+        <item name="android:layout_marginStart">53dp</item>
+        <item name="android:layout_marginEnd">53dp</item>
+        <item name="android:paddingTop">15dp</item>
+        <item name="android:paddingBottom">15dp</item>
+        <item name="android:drawablePadding">18dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:background">@drawable/press_effect_white_bg</item>
+    </style>
+
     <style name="item_share_dialog">
         <item name="android:textColor">@color/textPrimary</item>
         <item name="android:textSize">12sp</item>

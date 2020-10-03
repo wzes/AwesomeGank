@@ -4,6 +4,7 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.pm.PackageManager
+import android.os.Environment
 import android.view.View
 
 /**
@@ -53,4 +54,12 @@ fun Context.getVersionName(): String {
         ""
     }
 
+}
+
+fun Context.clearCache(): Boolean {
+    var result = cacheDir.deleteDir()
+    if (Environment.getExternalStorageState() == Environment.MEDIA_MOUNTED) {
+        result = result and (externalCacheDir?.deleteDir() ?: false)
+    }
+    return result
 }
