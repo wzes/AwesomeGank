@@ -103,6 +103,9 @@ class SearchActivity : AppCompatActivity() {
                     setHasMore(articleModel.getArticleData().value?.size!! > 0)
                     setData(articleModel.getArticleData().value)
                     notifyDataSetChanged()
+                    if (articleModel.getArticleData().value?.size!! > 0) {
+                        page++
+                    }
                 }
             }
         })

@@ -52,7 +52,6 @@ class MeFragment : LazyFragment() {
         me_title.text = "我的"
         layoutParams.topMargin = context?.getStatusBarHeight()!!
         me_title.layoutParams = layoutParams
-
     }
 
     override fun getLayoutId(): Int {
